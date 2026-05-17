@@ -37,13 +37,12 @@ proxy-groups:
       - 香港节点
       - 手动切换
       - DIRECT
-  - name: OpenAi
+  - name: OpenAI
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
     type: select
     proxies:
       - 节点选择
       - 自动选择
-      - AI-UNHK
       - 纯净节点
       - 狮城节点
       - 台湾节点
@@ -53,11 +52,9 @@ proxy-groups:
       - 香港节点
       - 手动切换
       - DIRECT
-  - name: AI-UNHK
+  - name: AI-MIX
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
-    include-all: true
-    exclude-filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong
     proxies:
       - 节点选择
       - 自动选择
@@ -323,8 +320,8 @@ proxy-groups:
       - 手动切换
       - 自动选择
       - 电报消息
-      - OpenAi
-      - AI-UNHK
+      - OpenAI
+      - AI-MIX
       - 油管视频
       - 奈飞视频
       - 巴哈姆特
@@ -408,6 +405,27 @@ rule-providers:
     interval: 86400
     format: text
     type: http
+  Gemini:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.list
+    path: ./ruleset/Gemini.list
+    behavior: classical
+    interval: 86400
+    format: text
+    type: http
+  OpenAI:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.list
+    path: ./ruleset/OpenAI.list
+    behavior: classical
+    interval: 86400
+    format: text
+    type: http
+  Anthropic:
+    url: https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Anthropic/Anthropic.list
+    path: ./ruleset/Anthropic.list
+    behavior: classical
+    interval: 86400
+    format: text
+    type: http
   Bing:
     url: https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Bing.list
     path: ./ruleset/Bing.list
@@ -439,13 +457,6 @@ rule-providers:
   Telegram:
     url: https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Telegram.list
     path: ./ruleset/Telegram.list
-    behavior: classical
-    interval: 86400
-    format: text
-    type: http
-  OpenAi:
-    url: https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/OpenAi.list
-    path: ./ruleset/OpenAi.list
     behavior: classical
     interval: 86400
     format: text
@@ -578,13 +589,15 @@ rules:
   - "RULE-SET,GoogleFCM,谷歌FCM"
   - "RULE-SET,GoogleCN,全球直连"
   - "RULE-SET,SteamCN,全球直连"
-  - "RULE-SET,AI-MIX,AI-UNHK"
+  - "RULE-SET,AI-MIX,AI-MIX"
+  - "RULE-SET,Gemini,AI-MIX"
+  - "RULE-SET,Anthropic,AI-MIX"
+  - "RULE-SET,OpenAI,OpenAI"
   - "RULE-SET,Bing,微软Bing"
   - "RULE-SET,OneDrive,微软云盘"
   - "RULE-SET,Microsoft,微软服务"
   - "RULE-SET,Apple,苹果服务"
   - "RULE-SET,Telegram,电报消息"
-  - "RULE-SET,OpenAi,OpenAi"
   - "RULE-SET,NetEaseMusic,网易音乐"
   - "RULE-SET,Epic,游戏平台"
   - "RULE-SET,Origin,游戏平台"
