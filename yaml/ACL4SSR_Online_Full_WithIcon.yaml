@@ -7,6 +7,7 @@ proxy-groups:
       - 台湾节点
       - 狮城节点
       - 纯净节点
+      - 纯净节点-USA
       - 日本节点
       - 美国节点
       - 韩国节点
@@ -44,6 +45,7 @@ proxy-groups:
       - 节点选择
       - 自动选择
       - 纯净节点
+      - 纯净节点-USA
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -59,6 +61,7 @@ proxy-groups:
       - 节点选择
       - 自动选择
       - 纯净节点
+      - 纯净节点-USA
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -73,6 +76,7 @@ proxy-groups:
       - 节点选择
       - 自动选择
       - 纯净节点
+      - 纯净节点-USA
       - 狮城节点
       - 香港节点
       - 台湾节点
@@ -118,6 +122,7 @@ proxy-groups:
       - 节点选择
       - 自动选择
       - 纯净节点
+      - 纯净节点-USA
       - 香港节点
       - 台湾节点
       - 狮城节点
@@ -143,6 +148,7 @@ proxy-groups:
       - DIRECT
       - 节点选择
       - 纯净节点
+      - 纯净节点-USA
       - 美国节点
       - 台湾节点
       - 狮城节点
@@ -285,6 +291,13 @@ proxy-groups:
     type: url-test
     interval: 300
     tolerance: 50
+  - name: 纯净节点-USA
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
+    include-all: true
+    filter: (?i)^pure-.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?:^|[^A-Za-z])US(?:[^A-Za-z]|$)|United States)
+    type: url-test
+    interval: 300
+    tolerance: 50
   - name: 台湾节点
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Taiwan.png
     include-all: true
@@ -343,6 +356,7 @@ proxy-groups:
       - 日本节点
       - 美国节点
       - 纯净节点
+      - 纯净节点-USA
       - 台湾节点
       - 狮城节点
       - 韩国节点
