@@ -156,6 +156,22 @@ proxy-groups:
       - 韩国节点
       - 香港节点
       - 手动切换
+  - name: Google
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 纯净节点
+      - 纯净节点-USA
+      - 美国节点
+      - 台湾节点
+      - 狮城节点
+      - 日本节点
+      - 韩国节点
+      - 香港节点
+      - 手动切换
+      - DIRECT
   - name: 微软Bing
     icon: https://testingcf.jsdelivr.net/gh/shindgewongxj/WHATSINStash@master/icon/bing.png
     type: select
@@ -342,6 +358,7 @@ proxy-groups:
       - 国外媒体
       - 国内媒体
       - 谷歌FCM
+      - Google
       - 微软Bing
       - 微软云盘
       - 微软服务
@@ -635,7 +652,7 @@ rules:
   - "RULE-SET,Nintendo,游戏平台"
   - "RULE-SET,YouTube,油管视频"
   - "RULE-SET,Netflix,奈飞视频"
-  - "RULE-SET,Google,节点选择"
+  - "RULE-SET,Google,Google"
   - "RULE-SET,Bahamut,巴哈姆特"
   - "RULE-SET,BilibiliHMT,哔哩哔哩"
   - "RULE-SET,Bilibili,哔哩哔哩"
