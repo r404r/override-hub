@@ -1,52 +1,48 @@
 # Repository Guidelines
 
-## Project Structure & Module Organization
-This repository is a small content repo for Mihomo Party override examples.
+## What this repo is
 
-- `javascript/`: JavaScript override scripts. Each file should export logic through the existing `main(config)` pattern.
-- `yaml/`: YAML override examples and rule sets.
-- `.github/workflows/`: repository automation, including upstream sync.
-- `README.md`: user-facing usage instructions and raw-link examples.
+A fork of [mihomo-party-org/override-hub](https://github.com/mihomo-party-org/override-hub). Contains Mihomo Party override scripts/configs consumed directly via raw GitHub URLs. No build step, no runtime, no package manager.
 
-Keep related changes together. If you update a script or YAML example that changes behavior, also update `README.md` when the public usage surface changes.
+- `javascript/`: JS overrides. Each file must export a `function main(config)` that mutates and returns the config object.
+- `yaml/`: YAML overrides and rule sets.
+- `README.md`: lists raw URLs for each file. **Update when adding or renaming files** — users paste these links directly into Mihomo Party.
 
-## Build, Test, and Development Commands
-There is no build system or automated test suite in this repo. Use lightweight checks before committing:
+## Validation (no automated tests)
 
-- `rtk git status --short --branch`: confirm the intended files changed.
-- `rtk sed -n '1,160p' javascript/<file>.js`: review JS formatting and structure.
-- `rtk sed -n '1,120p' yaml/<file>.yaml`: review YAML indentation and keys.
-- `rtk git diff -- <path>`: verify the final patch before commit.
+```sh
+git diff -- <path>                       # review patch before commit
+node --check javascript/<file>.js        # syntax check only; no test runner exists
+```
 
-For upstream maintenance:
+YAML: visually verify 2-space indentation and that `path`/`url` values in rule-providers still resolve.
 
-- `rtk git fetch upstream`
-- `rtk git switch upstream-main`
-- `rtk git merge --ff-only upstream/main`
+## Coding style
 
-## Coding Style & Naming Conventions
-Match the existing file style instead of reformatting aggressively.
+- **JS**: 2-space indent, trailing commas where already present, object-heavy style. Do not reformat existing files.
+- **YAML**: 2-space indent, stable key ordering. Avoid unnecessary quote changes.
+- **Filenames**: Chinese names are intentional (e.g. `布丁狗的订阅转换.js`). Do not rename them — raw URLs in README embed percent-encoded versions of these names.
 
-- JavaScript: 2-space indentation, trailing commas where already used, preserve the current object-heavy style.
-- YAML: 2-space indentation, stable key ordering when practical, avoid unnecessary quoting changes.
-- Filenames: keep descriptive names in Chinese when they match the current repository style, for example `javascript/布丁狗的订阅转换.js`.
+## Fork vs upstream
 
-## Testing Guidelines
-Validation is manual. Contributors should:
+This fork has two permanent branches:
+- `main` — fork's own branch; fork-specific files live here (e.g. `正则匹配设置代理组图标.js` is not in upstream README).
+- `upstream-main` — tracks `upstream/main` locally.
 
-- check JavaScript for syntax mistakes and accidental key renames,
-- check YAML for indentation and rule-path correctness,
-- confirm referenced remote URLs and local `path` values still make sense,
-- include a short validation note in the PR.
+Upstream sync is **automated**: `.github/workflows/sync-upstream.yml` runs daily at 09:17 CST, merges `upstream/main` into `main`, and opens a PR on `automation/sync-upstream-main`. Manual upstream sync only needed if you can't wait for the schedule:
 
-## Commit & Pull Request Guidelines
-Prefer concise, imperative commit messages. The history currently mixes plain subjects and Conventional Commit prefixes; prefer the clearer form, such as `fix: update proxy domain` or `chore: sync upstream/main`.
+```sh
+git fetch upstream
+git switch main
+git merge --no-ff upstream/main
+```
 
-PRs should include:
+## Commit messages
 
-- a short summary of behavior changes,
-- affected files or examples,
-- any manual validation performed,
-- screenshots only if UI-facing documentation changes.
+Prefer Conventional Commits: `fix: ...`, `feat: ...`, `chore: ...`. Plain imperative subjects are also acceptable. Match the existing log style.
 
-For upstream contributions, branch from `upstream-main`. For fork-only features, branch from `main`.
+## PR conventions
+
+- Short summary of behavior change + affected files.
+- Note any manual validation done (e.g. "syntax checked with `node --check`").
+- Raw URL links in README must use the **upstream org path** (`mihomo-party-org/override-hub`) for files that exist upstream; fork-only files use the fork's raw URL (`r404r/override-hub`).
