@@ -54,6 +54,38 @@ proxy-groups:
       - 香港节点
       - 手动切换
       - DIRECT
+  - name: Gemini
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 纯净节点
+      - 纯净节点-USA
+      - 狮城节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 香港节点
+      - 手动切换
+      - DIRECT
+  - name: Claude
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 纯净节点
+      - 纯净节点-USA
+      - 狮城节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 香港节点
+      - 手动切换
+      - DIRECT
   - name: AI-MIX
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
@@ -350,6 +382,8 @@ proxy-groups:
       - 自动选择
       - 电报消息
       - OpenAI
+      - Gemini
+      - Claude
       - AI-MIX
       - 油管视频
       - 奈飞视频
@@ -635,10 +669,10 @@ rules:
   - "RULE-SET,GoogleFCM,谷歌FCM"
   - "RULE-SET,GoogleCN,全球直连"
   - "RULE-SET,SteamCN,全球直连"
-  - "RULE-SET,AI-MIX,AI-MIX"
-  - "RULE-SET,Gemini,AI-MIX"
-  - "RULE-SET,Anthropic,AI-MIX"
   - "RULE-SET,OpenAI,OpenAI"
+  - "RULE-SET,Gemini,Gemini"
+  - "RULE-SET,Anthropic,Claude"
+  - "RULE-SET,AI-MIX,AI-MIX"
   - "RULE-SET,Bing,微软Bing"
   - "RULE-SET,OneDrive,微软云盘"
   - "RULE-SET,Microsoft,微软服务"
