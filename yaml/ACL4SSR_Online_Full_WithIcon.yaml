@@ -86,6 +86,22 @@ proxy-groups:
       - 香港节点
       - 手动切换
       - DIRECT
+  - name: AI中转
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
+    type: select
+    proxies:
+      - 节点选择
+      - 自动选择
+      - 纯净节点
+      - 纯净节点-USA
+      - 狮城节点
+      - 台湾节点
+      - 日本节点
+      - 美国节点
+      - 韩国节点
+      - 香港节点
+      - 手动切换
+      - DIRECT
   - name: AI-MIX
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
@@ -400,6 +416,7 @@ proxy-groups:
       - OpenAI
       - Gemini
       - Claude
+      - AI中转
       - AI-MIX
       - 油管视频
       - 奈飞视频
@@ -493,6 +510,13 @@ rule-providers:
     behavior: classical
     interval: 86400
     format: yaml
+    type: http
+  AI-Transit:
+    url: https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ruleset/AI-Transit.list
+    path: ./ruleset/AI-Transit.list
+    behavior: classical
+    interval: 86400
+    format: text
     type: http
   SteamCN:
     url: https://testingcf.jsdelivr.net/gh/ACL4SSR/ACL4SSR@master/Clash/Ruleset/SteamCN.list
@@ -694,6 +718,7 @@ rules:
   - "RULE-SET,GoogleCN,全球直连"
   - "RULE-SET,SteamCN,全球直连"
   - "RULE-SET,GitHub,GitHub"
+  - "RULE-SET,AI-Transit,AI中转"
   - "RULE-SET,OpenAI,OpenAI"
   - "RULE-SET,Gemini,Gemini"
   - "RULE-SET,Anthropic,Claude"
