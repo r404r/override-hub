@@ -45,20 +45,24 @@
 
 [ACL4SSR_Online_Full_WithIcon.tower.ini](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.tower.ini)
 
-由 `ACL4SSR_Online_Full_WithIcon.yaml` 派生的[塔台](https://github.com/pengchujin/tower)规则方案（subconverter INI 语法），策略组、组成员和规则顺序与之一致。在塔台“规则方案”中通过上面的链接导入；raw 链接不可达时可改用 jsDelivr 镜像 `https://testingcf.jsdelivr.net/gh/r404r/override-hub@main/yaml/ACL4SSR_Online_Full_WithIcon.tower.ini`（更新可能滞后），或复制文件内容以文本导入。节点来自塔台里的订阅，再由塔台导出 sing-box 等客户端配置。
+[塔台](https://github.com/pengchujin/tower)规则方案（subconverter INI 语法），以塔台内置的“ACL4SSR 全分组”（ACL4SSR `75f0101`）为底：内置规则和分组不改动，只在 4 个选择组末尾追加可选项。在此基础上只插入 `ACL4SSR_Online_Full_WithIcon.yaml` 的专属规则，并追加以下专属分组：`纯净节点`、`纯净节点-USA`、`AI固定出口`、`OpenAI`、`Gemini`、`Claude`、`AI中转`、`AI-MIX`、`共享服务`、`Google`、`Google直连例外`、`GitHub`、`日韩台自动`。
 
-- 按塔台 1.0.21 源码编写，并在本机用模拟塔台行为的脚本和 sing-box 1.14.1 验证；尚未在塔台 App 中实际导入和导出。
-- 导入时塔台会下载全部 38 个规则列表（jsDelivr 镜像），任一下载失败都会中止导入。
-- 为适配塔台所做的调整：
-  - 塔台会把没有节点的组改为直连，所以原本空组拒绝的组都以 `REJECT` 作为最后一个成员，保持无节点时拒绝连接。它始终是成员：`手动切换`、`奈飞节点` 中会多一个 `REJECT` 选项，各地区测速组也会包含它。sing-box 中 `REJECT` 是 `block` 出站。
-  - 塔台导出 sing-box 时会丢弃 `GEOIP,CN`，所以在它之前加入了 ACL4SSR `ChinaIp.list`（仅 IPv4）。
-  - `UnBan` 中大小写混合的后缀补充了小写版本。
-- 导出 sing-box 时的限制：
-  - 进程名、URL-REGEX、IP-ASN 规则会被丢弃。
-  - 规则列表全部内联进配置，按模拟结果约 0.9 MB。列表更新后需要在塔台刷新并重新导出。
-  - 塔台的 sing-box 配置先解析所有连接再匹配规则：无法解析的域名连接会失败；IP 规则对所有连接生效，不同于 Mihomo 的 `no-resolve`。
-  - 图标和测速 `expected-status` 不会保留。
-- 为 Clash、Surge、Loon、Quantumult X、Egern 导出时不要开启塔台的“代理集合”：开启后 `REJECT` 会排在订阅节点之前，`手动切换`、`奈飞节点` 会默认选中 `REJECT`。sing-box 导出不受影响。
+- **导入**：在塔台“规则方案”中通过上面的链接或复制文本导入，节点来自塔台里的订阅。导入时塔台会下载全部规则列表，任一下载失败都会中止导入；其中 ACL4SSR 列表使用 raw.githubusercontent.com 固定版本，网络受限时请在可访问 GitHub 的环境下导入。
+- **沿用塔台内置方案的部分**（与 Mihomo 覆写不同）：
+  - 组名带 emoji；地区组正则较宽松；
+  - `Ⓜ️ 微软服务` 默认直连，并使用 ACL4SSR 的 Microsoft 列表；
+  - `🎥 奈飞视频` 默认 `🎥 奈飞节点`；
+  - 没有 `GLOBAL` 组；保留 `💬 Ai平台`，但 AI 域名会先被专属规则匹配；
+  - 地区组筛选不到节点时会被塔台改为直连。
+- **失败即拒绝**：`纯净节点`、`纯净节点-USA`、`日韩台自动` 以 `REJECT` 结尾，保证没有匹配节点时被拒绝而不是直连；sing-box 中 `REJECT` 是 `block` 出站。`日韩台自动` 直接按严格的日本、台湾、韩国节点名正则测速，不再嵌套内置地区组，因为塔台会把没有节点的地区组改为直连。
+- **追加的可选项**：`🚀 节点选择` 末尾加了 `日韩台自动` 和两个 pure 组；`📹 油管视频`、`🌍 国外媒体`、`📢 谷歌FCM` 末尾加了两个 pure 组。原有默认项不变。
+- **导出 sing-box 时**：
+  - ACL4SSR 列表会被塔台换成其预编译规则集（sing-box 启动时下载），其余列表内联；按模拟结果配置约 0.3–0.4 MB。
+  - `GEOIP,CN`、进程名、URL-REGEX、IP-ASN 规则会被丢弃，与塔台内置方案相同。
+  - UnBan 中大小写混合的后缀已补充小写版本。
+- **代理集合**：为 Clash、Surge、Loon、Quantumult X、Egern 导出时不要开启塔台的“代理集合”，否则 pure 组会把 `REJECT` 排在订阅节点之前；sing-box 导出不受影响。
+- **分组选择会被记住**：sing-box 按组名保存手动选择，并可能在不同配置之间沿用。导入后请在 sing-box 的分组页确认 `🐟 漏网之鱼`、`🚀 节点选择` 和各 AI 组的当前选择，特别是之前用过同名分组的配置时。
+- **验证范围**：按塔台 1.0.21 源码，在本机用模拟塔台行为的脚本和 sing-box 1.14.1 验证；未在塔台 App 中实际导入和导出。
 
 ### JavaScript
 
