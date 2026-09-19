@@ -617,25 +617,14 @@ rule-providers:
     interval: 86400
     format: text
     type: http
-  # Scoped service rules; shared third-party endpoints have a separate policy.
+  # Automatically updated external rules; local exceptions precede this provider.
   OpenAI:
-    type: inline
+    type: http
     behavior: classical
-    payload:
-      - DOMAIN,chat.openai.com.cdn.cloudflare.net
-      - DOMAIN,openai-api.arkoselabs.com
-      - DOMAIN,openaicom-api-bdcpf8c6d2e9atf6.z01.azurefd.net
-      - DOMAIN,openaicomproductionae4b.blob.core.windows.net
-      - DOMAIN,production-openaicom-storage.azureedge.net
-      - DOMAIN,cdn.openaimerge.com
-      - DOMAIN-SUFFIX,openai.com
-      - DOMAIN-SUFFIX,chatgpt.com
-      - DOMAIN-SUFFIX,chatgpt.livekit.cloud
-      - DOMAIN-SUFFIX,oaistatic.com
-      - DOMAIN-SUFFIX,oaiusercontent.com
-      - DOMAIN-SUFFIX,oaistatsig.com
-      - DOMAIN-SUFFIX,openaiapi-site.azureedge.net
-      - DOMAIN-SUFFIX,openaicom.imgix.net
+    format: yaml
+    url: https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/classical/openai.yaml
+    path: ./ruleset/OpenAI-MetaCubeX.yaml
+    interval: 86400
   SharedServices:
     type: inline
     behavior: classical
@@ -850,10 +839,15 @@ rules:
   - "DOMAIN-SUFFIX,notebooklm.google,Gemini"
   - "DOMAIN-SUFFIX,notebooklm.google.com,Gemini"
   - "DOMAIN-SUFFIX,sora.com,OpenAI"
+  # Small compatibility supplements; the external provider remains the main list.
+  - "DOMAIN,openai-api.arkoselabs.com,OpenAI"
+  - "DOMAIN,cdn.openaimerge.com,OpenAI"
+  - "DOMAIN-SUFFIX,openaiapi-site.azureedge.net,OpenAI"
+  - "DOMAIN-SUFFIX,openaicom.imgix.net,OpenAI"
+  - "RULE-SET,SharedServices,共享服务"
   - "RULE-SET,OpenAI,OpenAI"
   - "RULE-SET,Gemini,Gemini"
   - "RULE-SET,Anthropic,Claude"
-  - "RULE-SET,SharedServices,共享服务"
   - "RULE-SET,AI-MIX,AI-MIX"
   - "RULE-SET,Bing,微软Bing"
   - "RULE-SET,OneDrive,微软云盘"
