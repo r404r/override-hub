@@ -358,7 +358,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Hong_Kong.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)港|HK|hk|Hong Kong|HongKong|hongkong
+    filter: (?i)港|🇭🇰|(?<![A-Za-z])(?:HK|Hong ?Kong)(?![A-Za-z])
     type: url-test
     interval: 300
     tolerance: 50
@@ -366,7 +366,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Japan.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan
+    filter: (?i)日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?![A-Za-z])
     type: url-test
     interval: 300
     tolerance: 50
@@ -374,7 +374,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/United_States.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States
+    filter: (?i)美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])(?:US|USA|United States)(?![A-Za-z])
     type: url-test
     interval: 300
     tolerance: 50
@@ -398,7 +398,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Taiwan.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)台|新北|彰化|TW|Taiwan
+    filter: (?i)台|新北|彰化|🇹🇼|(?<![A-Za-z])(?:TW|Taiwan)(?![A-Za-z])
     type: url-test
     interval: 300
     tolerance: 50
@@ -406,7 +406,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Singapore.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)新加坡|坡|狮城|SG|Singapore
+    filter: (?i)新加坡|坡|狮城|🇸🇬|(?<![A-Za-z])(?:SG|Singapore)(?![A-Za-z])
     type: url-test
     interval: 300
     tolerance: 50
@@ -414,7 +414,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Korea.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)KR|Korea|KOR|首尔|韩|韓
+    filter: (?i)首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?![A-Za-z])
     type: url-test
     interval: 300
     tolerance: 50
