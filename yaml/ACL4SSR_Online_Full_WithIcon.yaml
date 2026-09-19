@@ -234,6 +234,14 @@ proxy-groups:
       - 香港节点
       - 手动切换
       - DIRECT
+  - name: Google直连例外
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Google_Search.png
+    type: select
+    proxies:
+      - DIRECT
+      - Google
+      - 节点选择
+      - 手动切换
   - name: GitHub
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/GitHub.png
     type: select
@@ -466,6 +474,7 @@ proxy-groups:
       - 国内媒体
       - 谷歌FCM
       - Google
+      - Google直连例外
       - GitHub
       - 微软Bing
       - 微软云盘
@@ -793,12 +802,15 @@ rule-providers:
 
 rules:
   - "RULE-SET,LocalAreaNetwork,DIRECT"
+  # Preserve UnBan precedence while making its Google exceptions selectable.
+  - "DOMAIN,dl.google.com,Google直连例外"
+  - "DOMAIN-SUFFIX,googletraveladservices.com,Google直连例外"
   - "RULE-SET,UnBan,全球直连"
   - "RULE-SET,WeChat,全球直连"
   - "RULE-SET,BanAD,广告拦截"
   - "RULE-SET,BanProgramAD,应用净化"
   - "RULE-SET,GoogleFCM,谷歌FCM"
-  - "RULE-SET,GoogleCN,全球直连"
+  - "RULE-SET,GoogleCN,Google直连例外"
   - "RULE-SET,SteamCN,全球直连"
   - "RULE-SET,GitHub,GitHub"
   - "RULE-SET,AI-Transit,AI中转"
