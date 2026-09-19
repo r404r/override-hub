@@ -1,0 +1,2084 @@
+{
+  "log": {
+    "level": "warn",
+    "timestamp": true
+  },
+  "dns": {
+    "servers": [
+      {
+        "type": "https",
+        "tag": "dns-remote",
+        "server": "8.8.8.8",
+        "detour": "自动选择"
+      },
+      {
+        "type": "https",
+        "tag": "dns-direct",
+        "server": "223.5.5.5"
+      },
+      {
+        "type": "fakeip",
+        "tag": "dns-fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      }
+    ],
+    "rules": [
+      {
+        "clash_mode": "Direct",
+        "server": "dns-direct"
+      },
+      {
+        "rule_set": [
+          "geosite-private",
+          "UnBan",
+          "UnBan-Lowercase",
+          "GoogleCN",
+          "SteamCN",
+          "geosite-cn"
+        ],
+        "server": "dns-direct"
+      },
+      {
+        "query_type": [
+          "HTTPS",
+          "SVCB"
+        ],
+        "action": "predefined",
+        "rcode": "NOERROR"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
+        ],
+        "server": "dns-fakeip",
+        "rewrite_ttl": 1
+      }
+    ],
+    "final": "dns-remote",
+    "strategy": "prefer_ipv4"
+  },
+  "inbounds": [
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "address": [
+        "172.19.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "auto_route": true,
+      "strict_route": true
+    },
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 7890
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "direct",
+      "tag": "DIRECT"
+    },
+    {
+      "type": "socks",
+      "tag": "REJECT",
+      "server": "127.0.0.1",
+      "server_port": 9
+    },
+    {
+      "type": "selector",
+      "tag": "节点选择",
+      "outbounds": [
+        "自动选择",
+        "日韩台自动",
+        "台湾节点",
+        "狮城节点",
+        "纯净节点",
+        "纯净节点-USA",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "手动切换",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "自动选择",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50
+    },
+    {
+      "type": "urltest",
+      "tag": "日韩台自动",
+      "outbounds": [
+        "日本节点",
+        "台湾节点",
+        "韩国节点"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50
+    },
+    {
+      "type": "selector",
+      "tag": "电报消息",
+      "outbounds": [
+        "节点选择",
+        "自动选择",
+        "狮城节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "AI固定出口",
+      "outbounds": [
+        "纯净节点-USA",
+        "{all}"
+      ],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:^pure-.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "OpenAI",
+      "outbounds": [
+        "AI固定出口",
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "狮城节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Gemini",
+      "outbounds": [
+        "AI固定出口",
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "狮城节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Claude",
+      "outbounds": [
+        "AI固定出口",
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "狮城节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "AI中转",
+      "outbounds": [
+        "AI固定出口",
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "狮城节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "共享服务",
+      "outbounds": [
+        "节点选择",
+        "DIRECT",
+        "OpenAI",
+        "Gemini",
+        "Claude"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "AI-MIX",
+      "outbounds": [
+        "AI固定出口",
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "狮城节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "油管视频",
+      "outbounds": [
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "狮城节点",
+        "香港节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "奈飞视频",
+      "outbounds": [
+        "节点选择",
+        "自动选择",
+        "奈飞节点",
+        "狮城节点",
+        "香港节点",
+        "台湾节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "巴哈姆特",
+      "outbounds": [
+        "台湾节点",
+        "节点选择",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "哔哩哔哩",
+      "outbounds": [
+        "全球直连",
+        "台湾节点",
+        "香港节点"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "国外媒体",
+      "outbounds": [
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "国内媒体",
+      "outbounds": [
+        "DIRECT",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "谷歌FCM",
+      "outbounds": [
+        "DIRECT",
+        "节点选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "美国节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Google",
+      "outbounds": [
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "美国节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "香港节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "Google直连例外",
+      "outbounds": [
+        "DIRECT",
+        "Google",
+        "节点选择",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "GitHub",
+      "outbounds": [
+        "节点选择",
+        "自动选择",
+        "纯净节点",
+        "纯净节点-USA",
+        "美国节点",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "手动切换",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "微软Bing",
+      "outbounds": [
+        "DIRECT",
+        "节点选择",
+        "美国节点",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "微软云盘",
+      "outbounds": [
+        "DIRECT",
+        "节点选择",
+        "美国节点",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "微软服务",
+      "outbounds": [
+        "节点选择",
+        "DIRECT",
+        "美国节点",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "苹果服务",
+      "outbounds": [
+        "DIRECT",
+        "节点选择",
+        "美国节点",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "游戏平台",
+      "outbounds": [
+        "DIRECT",
+        "节点选择",
+        "美国节点",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "韩国节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "网易音乐",
+      "outbounds": [
+        "DIRECT",
+        "节点选择",
+        "自动选择",
+        "{all}"
+      ],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:网易|音乐|NetEase|Music)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "全球直连",
+      "outbounds": [
+        "DIRECT",
+        "节点选择",
+        "自动选择"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "广告拦截",
+      "outbounds": [
+        "REJECT",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "应用净化",
+      "outbounds": [
+        "REJECT",
+        "DIRECT"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "漏网之鱼",
+      "outbounds": [
+        "节点选择",
+        "自动选择",
+        "DIRECT",
+        "香港节点",
+        "台湾节点",
+        "狮城节点",
+        "日本节点",
+        "美国节点",
+        "韩国节点",
+        "手动切换"
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "香港节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:港|🇭🇰|(?<![A-Za-z])(?:HK|Hong ?Kong)(?![A-Za-z]))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "日本节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?![A-Za-z]))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "美国节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])(?:US|USA|United States)(?![A-Za-z]))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "纯净节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:^pure-.*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(JP|Japan)(?:[^A-Za-z]|$)|美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "纯净节点-USA",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:^pure-.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "台湾节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:台|新北|彰化|🇹🇼|(?<![A-Za-z])(?:TW|Taiwan)(?![A-Za-z]))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "狮城节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:新加坡|坡|狮城|🇸🇬|(?<![A-Za-z])(?:SG|Singapore)(?![A-Za-z]))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "韩国节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?![A-Za-z]))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "奈飞节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:NF|奈飞|解锁|Netflix|NETFLIX|Media)"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "GLOBAL",
+      "outbounds": [
+        "节点选择",
+        "手动切换",
+        "自动选择",
+        "电报消息",
+        "AI固定出口",
+        "OpenAI",
+        "Gemini",
+        "Claude",
+        "AI中转",
+        "AI-MIX",
+        "共享服务",
+        "油管视频",
+        "奈飞视频",
+        "巴哈姆特",
+        "哔哩哔哩",
+        "国外媒体",
+        "国内媒体",
+        "谷歌FCM",
+        "Google",
+        "Google直连例外",
+        "GitHub",
+        "微软Bing",
+        "微软云盘",
+        "微软服务",
+        "苹果服务",
+        "游戏平台",
+        "网易音乐",
+        "全球直连",
+        "广告拦截",
+        "应用净化",
+        "漏网之鱼",
+        "香港节点",
+        "日本节点",
+        "美国节点",
+        "纯净节点",
+        "纯净节点-USA",
+        "台湾节点",
+        "狮城节点",
+        "韩国节点",
+        "奈飞节点",
+        "{all}"
+      ]
+    }
+  ],
+  "http_clients": [
+    {
+      "tag": "rule-set"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "action": "sniff"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "protocol": "dns"
+          },
+          {
+            "port": 53
+          }
+        ],
+        "action": "hijack-dns"
+      },
+      {
+        "network": "udp",
+        "action": "resolve"
+      },
+      {
+        "clash_mode": "Direct",
+        "outbound": "DIRECT"
+      },
+      {
+        "clash_mode": "Global",
+        "outbound": "GLOBAL"
+      },
+      {
+        "rule_set": "LocalAreaNetwork",
+        "outbound": "DIRECT"
+      },
+      {
+        "domain": [
+          "dl.google.com"
+        ],
+        "outbound": "Google直连例外"
+      },
+      {
+        "domain_suffix": [
+          "googletraveladservices.com"
+        ],
+        "outbound": "Google直连例外"
+      },
+      {
+        "rule_set": [
+          "UnBan",
+          "UnBan-Lowercase"
+        ],
+        "outbound": "全球直连"
+      },
+      {
+        "rule_set": "WeChat",
+        "outbound": "全球直连"
+      },
+      {
+        "rule_set": "BanAD",
+        "outbound": "广告拦截"
+      },
+      {
+        "rule_set": "BanProgramAD",
+        "outbound": "应用净化"
+      },
+      {
+        "rule_set": "GoogleFCM",
+        "outbound": "谷歌FCM"
+      },
+      {
+        "rule_set": "GoogleCN",
+        "outbound": "Google直连例外"
+      },
+      {
+        "rule_set": "SteamCN",
+        "outbound": "全球直连"
+      },
+      {
+        "rule_set": "GitHub",
+        "outbound": "GitHub"
+      },
+      {
+        "rule_set": "AI-Transit",
+        "outbound": "AI中转"
+      },
+      {
+        "domain_suffix": [
+          "claude.com"
+        ],
+        "outbound": "Claude"
+      },
+      {
+        "domain_suffix": [
+          "claudeusercontent.com"
+        ],
+        "outbound": "Claude"
+      },
+      {
+        "domain_suffix": [
+          "aistudio.google.com"
+        ],
+        "outbound": "Gemini"
+      },
+      {
+        "domain_suffix": [
+          "notebooklm.google"
+        ],
+        "outbound": "Gemini"
+      },
+      {
+        "domain_suffix": [
+          "notebooklm.google.com"
+        ],
+        "outbound": "Gemini"
+      },
+      {
+        "domain_suffix": [
+          "sora.com"
+        ],
+        "outbound": "OpenAI"
+      },
+      {
+        "domain": [
+          "openai-api.arkoselabs.com"
+        ],
+        "outbound": "OpenAI"
+      },
+      {
+        "domain": [
+          "cdn.openaimerge.com"
+        ],
+        "outbound": "OpenAI"
+      },
+      {
+        "domain_suffix": [
+          "openaiapi-site.azureedge.net"
+        ],
+        "outbound": "OpenAI"
+      },
+      {
+        "domain_suffix": [
+          "openaicom.imgix.net"
+        ],
+        "outbound": "OpenAI"
+      },
+      {
+        "rule_set": "SharedServices",
+        "outbound": "共享服务"
+      },
+      {
+        "rule_set": "OpenAI",
+        "outbound": "OpenAI"
+      },
+      {
+        "rule_set": "Gemini",
+        "outbound": "Gemini"
+      },
+      {
+        "rule_set": "Anthropic",
+        "outbound": "Claude"
+      },
+      {
+        "rule_set": "AI-MIX",
+        "outbound": "AI-MIX"
+      },
+      {
+        "rule_set": "Bing",
+        "outbound": "微软Bing"
+      },
+      {
+        "rule_set": [
+          "OneDrive",
+          "OneDrive-Process"
+        ],
+        "outbound": "微软云盘"
+      },
+      {
+        "rule_set": "Microsoft",
+        "outbound": "微软服务"
+      },
+      {
+        "rule_set": "Apple",
+        "outbound": "苹果服务"
+      },
+      {
+        "rule_set": "Telegram",
+        "outbound": "电报消息"
+      },
+      {
+        "rule_set": "NetEaseMusic",
+        "outbound": "网易音乐"
+      },
+      {
+        "rule_set": "Epic",
+        "outbound": "游戏平台"
+      },
+      {
+        "rule_set": "Origin",
+        "outbound": "游戏平台"
+      },
+      {
+        "rule_set": "Sony",
+        "outbound": "游戏平台"
+      },
+      {
+        "rule_set": "Steam",
+        "outbound": "游戏平台"
+      },
+      {
+        "rule_set": "Nintendo",
+        "outbound": "游戏平台"
+      },
+      {
+        "rule_set": "YouTube",
+        "outbound": "油管视频"
+      },
+      {
+        "rule_set": "Netflix",
+        "outbound": "奈飞视频"
+      },
+      {
+        "rule_set": "Google",
+        "outbound": "Google"
+      },
+      {
+        "rule_set": "Bahamut",
+        "outbound": "巴哈姆特"
+      },
+      {
+        "rule_set": "BilibiliHMT",
+        "outbound": "哔哩哔哩"
+      },
+      {
+        "rule_set": "Bilibili",
+        "outbound": "哔哩哔哩"
+      },
+      {
+        "rule_set": "ChinaMedia",
+        "outbound": "国内媒体"
+      },
+      {
+        "rule_set": "ProxyMedia",
+        "outbound": "国外媒体"
+      },
+      {
+        "rule_set": "ProxyGFWlist",
+        "outbound": "节点选择"
+      },
+      {
+        "rule_set": "ChinaDomain",
+        "outbound": "全球直连"
+      },
+      {
+        "rule_set": "ChinaCompanyIp",
+        "outbound": "全球直连"
+      },
+      {
+        "rule_set": "Download",
+        "outbound": "全球直连"
+      },
+      {
+        "action": "resolve",
+        "server": "dns-remote"
+      },
+      {
+        "rule_set": "geoip-cn",
+        "outbound": "全球直连"
+      }
+    ],
+    "rule_set": [
+      {
+        "type": "remote",
+        "tag": "LocalAreaNetwork",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/LocalAreaNetwork.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "UnBan",
+        "format": "source",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/UnBan.json",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "inline",
+        "tag": "UnBan-Lowercase",
+        "rules": [
+          {
+            "domain_suffix": [
+              "diskstation.me",
+              "myds.me",
+              "dscloud.biz",
+              "dscloud.me",
+              "dscloud.mobi",
+              "dsmynas.com",
+              "dsmynas.net",
+              "dsmynas.org",
+              "familyds.com",
+              "familyds.net",
+              "familyds.org"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "remote",
+        "tag": "WeChat",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/senshinya/singbox_ruleset@main/rule/WeChat/WeChat.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "inline",
+        "tag": "BanAD",
+        "rules": [
+          {
+            "domain_keyword": [
+              "admarvel",
+              "admaster",
+              "adsage",
+              "adsensor",
+              "adsmogo",
+              "adsrvmedia",
+              "adsserving",
+              "adsystem",
+              "adwords",
+              "applovin",
+              "appsflyer",
+              "domob",
+              "duomeng",
+              "dwtrack",
+              "guanggao",
+              "omgmta",
+              "omniture",
+              "openx",
+              "partnerad",
+              "pingfore",
+              "socdm",
+              "supersonicads",
+              "wlmonitor",
+              "zjtoolbar"
+            ],
+            "domain_suffix": [
+              "09mk.cn",
+              "100peng.com",
+              "114la.com",
+              "123juzi.net",
+              "138lm.com",
+              "17un.com",
+              "2cnt.net",
+              "3gmimo.com",
+              "3xx.vip",
+              "51.la",
+              "51taifu.com",
+              "51yes.com",
+              "600ad.com",
+              "6dad.com",
+              "70e.com",
+              "86.cc",
+              "8le8le.com",
+              "8ox.cn",
+              "95558000.com",
+              "99click.com",
+              "99youmeng.com",
+              "a3p4.net",
+              "acs86.com",
+              "acxiom-online.com",
+              "ad-brix.com",
+              "ad-delivery.net",
+              "ad-locus.com",
+              "ad-plus.cn",
+              "ad7.com",
+              "adadapted.com",
+              "adadvisor.net",
+              "adap.tv",
+              "adbana.com",
+              "adchina.com",
+              "adcome.cn",
+              "ader.mobi",
+              "adform.net",
+              "adfuture.cn",
+              "adhouyi.com",
+              "adinfuse.com",
+              "adirects.com",
+              "adjust.io",
+              "adkmob.com",
+              "adlive.cn",
+              "adlocus.com",
+              "admaji.com",
+              "admin6.com",
+              "admon.cn",
+              "adnyg.com",
+              "adpolestar.net",
+              "adpro.cn",
+              "adpush.cn",
+              "adquan.com",
+              "adreal.cn",
+              "ads8.com",
+              "adsame.com",
+              "adsmogo.com",
+              "adsmogo.org",
+              "adsunflower.com",
+              "adsunion.com",
+              "adtrk.me",
+              "adups.com",
+              "aduu.cn",
+              "advertising.com",
+              "adview.cn",
+              "advmob.cn",
+              "adwetec.com",
+              "adwhirl.com",
+              "adwo.com",
+              "adxmi.com",
+              "adyun.com",
+              "adzerk.net",
+              "agrant.cn",
+              "agrantsem.com",
+              "aihaoduo.cn",
+              "ajapk.com",
+              "allyes.cn",
+              "allyes.com",
+              "amazon-adsystem.com",
+              "analysys.cn",
+              "angsrvr.com",
+              "anquan.org",
+              "anysdk.com",
+              "appadhoc.com",
+              "appads.com",
+              "appboy.com",
+              "appdriver.cn",
+              "appjiagu.com",
+              "applifier.com",
+              "appsflyer.com",
+              "atdmt.com",
+              "baifendian.com",
+              "banmamedia.com",
+              "baoyatu.cc",
+              "baycode.cn",
+              "bayimob.com",
+              "behe.com",
+              "bfshan.cn",
+              "biddingos.com",
+              "biddingx.com",
+              "bjvvqu.cn",
+              "bjxiaohua.com",
+              "bloggerads.net",
+              "branch.io",
+              "bsdev.cn",
+              "bshare.cn",
+              "btyou.com",
+              "bugtags.com",
+              "buysellads.com",
+              "c0563.com",
+              "cacafly.com",
+              "casee.cn",
+              "cdnmaster.com",
+              "chance-ad.com",
+              "chanet.com.cn",
+              "chartbeat.com",
+              "chartboost.com",
+              "chengadx.com",
+              "chmae.com",
+              "clickadu.com",
+              "clicki.cn",
+              "clicktracks.com",
+              "clickzs.com",
+              "cloudmobi.net",
+              "cmcore.com",
+              "cnxad.com",
+              "cnzz.com",
+              "cnzzlink.com",
+              "cocounion.com",
+              "coocaatv.com",
+              "cooguo.com",
+              "coolguang.com",
+              "coremetrics.com",
+              "cpmchina.co",
+              "cpx24.com",
+              "crasheye.cn",
+              "crosschannel.com",
+              "ctrmi.com",
+              "customer-security.online",
+              "daoyoudao.com",
+              "datouniao.com",
+              "ddapp.cn",
+              "dianjoy.com",
+              "dianru.com",
+              "disqusads.com",
+              "domob.cn",
+              "domob.com.cn",
+              "domob.org",
+              "dotmore.com.tw",
+              "doubleverify.com",
+              "doudouguo.com",
+              "doumob.com",
+              "duanat.com",
+              "duiba.com.cn",
+              "duomeng.cn",
+              "dxpmedia.com",
+              "edigitalsurvey.com",
+              "eduancm.com",
+              "emarbox.com",
+              "exosrv.com",
+              "fancyapi.com",
+              "feitian001.com",
+              "feixin2.com",
+              "flashtalking.com",
+              "fraudmetrix.cn",
+              "g1.tagtic.cn",
+              "gentags.net",
+              "gepush.com",
+              "getui.com",
+              "glispa.com",
+              "go-mpulse",
+              "go-mpulse.net",
+              "godloveme.cn",
+              "gridsum.com",
+              "gridsumdissector.cn",
+              "gridsumdissector.com",
+              "growingio.com",
+              "guohead.com",
+              "guomob.com",
+              "haoghost.com",
+              "hivecn.cn",
+              "hypers.com",
+              "icast.cn",
+              "igexin.com",
+              "il8r.com",
+              "imageter.com",
+              "immob.cn",
+              "inad.com",
+              "inmobi.cn",
+              "inmobi.net",
+              "inmobicdn.cn",
+              "inmobicdn.net",
+              "innity.com",
+              "instabug.com",
+              "intely.cn",
+              "iperceptions.com",
+              "ipinyou.com",
+              "irs01.com",
+              "irs01.net",
+              "irs09.com",
+              "istreamsche.com",
+              "jesgoo.com",
+              "jiaeasy.net",
+              "jiguang.cn",
+              "jimdo.com",
+              "jisucn.com",
+              "jmgehn.cn",
+              "jpush.cn",
+              "jusha.com",
+              "juzi.cn",
+              "juzilm.com",
+              "kejet.com",
+              "kejet.net",
+              "keydot.net",
+              "keyrun.cn",
+              "kmd365.com",
+              "krux.net",
+              "lnk0.com",
+              "lnk8.cn",
+              "localytics.com",
+              "lomark.cn",
+              "lotuseed.com",
+              "lrswl.com",
+              "lufax.com",
+              "madhouse.cn",
+              "madmini.com",
+              "madserving.com",
+              "magicwindow.cn",
+              "mathtag.com",
+              "maysunmedia.com",
+              "mbai.cn",
+              "mediaplex.com",
+              "mediav.com",
+              "megajoy.com",
+              "mgogo.com",
+              "miaozhen.com",
+              "microad-cn.com",
+              "miidi.net",
+              "mijifen.com",
+              "mixpanel.com",
+              "mjmobi.com",
+              "mng-ads.com",
+              "moad.cn",
+              "moatads.com",
+              "mobaders.com",
+              "mobclix.com",
+              "mobgi.com",
+              "mobisage.cn",
+              "moogos.com",
+              "mopub.com",
+              "moquanad.com",
+              "mpush.cn",
+              "mxpnl.com",
+              "myhug.cn",
+              "mzy2014.com",
+              "networkbench.com",
+              "ninebox.cn",
+              "nylalobghyhirgh.com",
+              "o2omobi.com",
+              "oadz.com",
+              "oneapm.com",
+              "onetad.com",
+              "optaim.com",
+              "optimix.asia",
+              "optimix.cn",
+              "optimizelyapis.com",
+              "overture.com",
+              "p0y.cn",
+              "pagechoice.net",
+              "pingdom.net",
+              "plugrush.com",
+              "popin.cc",
+              "pro.cn",
+              "publicidad.net",
+              "publicidad.tv",
+              "pubmatic.com",
+              "pubnub.com",
+              "qcl777.com",
+              "qiyou.com",
+              "qtmojo.com",
+              "quantcount.com",
+              "qucaigg.com",
+              "qumi.com",
+              "qxxys.com",
+              "reachmax.cn",
+              "responsys.net",
+              "revsci.net",
+              "rlcdn.com",
+              "rtbasia.com",
+              "sanya1.com",
+              "scupio.com",
+              "shuiguo.com",
+              "shuzilm.cn",
+              "sitemeter.com",
+              "sitescout.com",
+              "sitetag.us",
+              "smartmad.com",
+              "social-touch.com",
+              "somecoding.com",
+              "sponsorpay.com",
+              "stargame.com",
+              "stg8.com",
+              "switchadhub.com",
+              "sycbbs.com",
+              "synacast.com",
+              "sysdig.com",
+              "talkingdata.com",
+              "talkingdata.net",
+              "tansuotv.com",
+              "tanv.com",
+              "tanx.com",
+              "tapjoy.cn",
+              "th7.cn",
+              "thoughtleadr.com",
+              "tianmidian.com",
+              "tiqcdn.com",
+              "touclick.com",
+              "trafficjam.cn",
+              "trafficmp.com",
+              "tuia.cn",
+              "ueadlian.com",
+              "uerzyr.cn",
+              "ugdtimg.com",
+              "ugvip.com",
+              "ujian.cc",
+              "ukeiae.com",
+              "umeng.co",
+              "umeng.com",
+              "umtrack.com",
+              "unimhk.com",
+              "union-wifi.com",
+              "union001.com",
+              "unionsy.com",
+              "unlitui.com",
+              "uri6.com",
+              "ushaqi.com",
+              "usingde.com",
+              "uuzu.com",
+              "uyunad.com",
+              "vamaker.com",
+              "vlion.cn",
+              "voiceads.cn",
+              "voiceads.com",
+              "vpon.com",
+              "vungle.cn",
+              "vungle.com",
+              "waps.cn",
+              "wapx.cn",
+              "webterren.com",
+              "whpxy.com",
+              "winads.cn",
+              "winasdaq.com",
+              "wiyun.com",
+              "wooboo.com.cn",
+              "wqmobile.com",
+              "wrating.com",
+              "wumii.cn",
+              "wwads.cn",
+              "xcy8.com",
+              "xdrig.com",
+              "xiaozhen.com",
+              "xibao100.com",
+              "xtgreat.com",
+              "xy.com",
+              "yandui.com",
+              "yigao.com",
+              "yijifen.com",
+              "yinooo.com",
+              "yiqifa.com",
+              "yiwk.com",
+              "ylunion.com",
+              "ymapp.com",
+              "ymcdn.cn",
+              "yongyuelm.com",
+              "yooli.com",
+              "youmi.net",
+              "youxiaoad.com",
+              "yoyi.com.cn",
+              "yoyi.tv",
+              "yrxmr.com",
+              "ysjwj.com",
+              "yunjiasu.com",
+              "yunpifu.cn",
+              "zampdsp.com",
+              "zamplus.com",
+              "zcdsp.com",
+              "zhidian3g.cn",
+              "zhiziyun.com",
+              "zhjfad.com",
+              "zqzxz.com",
+              "zzsx8.com",
+              "acuityplatform.com",
+              "ad-stir.com",
+              "ad-survey.com",
+              "ad4game.com",
+              "adcloud.jp",
+              "adcolony.com",
+              "addthis.com",
+              "adfurikun.jp",
+              "adhigh.net",
+              "adhood.com",
+              "adinall.com",
+              "adition.com",
+              "adk2x.com",
+              "admarket.mobi",
+              "admarvel.com",
+              "admedia.com",
+              "adnxs.com",
+              "adotmob.com",
+              "adperium.com",
+              "adriver.ru",
+              "adroll.com",
+              "adsco.re",
+              "adservice.com",
+              "adsrvr.org",
+              "adsymptotic.com",
+              "adtaily.com",
+              "adtech.de",
+              "adtechjp.com",
+              "adtechus.com",
+              "airpush.com",
+              "am15.net",
+              "amobee.com",
+              "appier.net",
+              "applift.com",
+              "apsalar.com",
+              "atas.io",
+              "awempire.com",
+              "axonix.com",
+              "beintoo.com",
+              "bepolite.eu",
+              "bidtheatre.com",
+              "bidvertiser.com",
+              "blismedia.com",
+              "brucelead.com",
+              "bttrack.com",
+              "casalemedia.com",
+              "celtra.com",
+              "channeladvisor.com",
+              "connexity.net",
+              "criteo.com",
+              "criteo.net",
+              "csbew.com",
+              "directrev.com",
+              "dumedia.ru",
+              "effectivemeasure.com",
+              "effectivemeasure.net",
+              "eqads.com",
+              "everesttech.net",
+              "exoclick.com",
+              "extend.tv",
+              "eyereturn.com",
+              "fastapi.net",
+              "fastclick.com",
+              "fastclick.net",
+              "flurry.com",
+              "gosquared.com",
+              "gtags.net",
+              "heyzap.com",
+              "histats.com",
+              "hitslink.com",
+              "hot-mob.com",
+              "hyperpromote.com",
+              "i-mobile.co.jp",
+              "imrworldwide.com",
+              "inmobi.com",
+              "inner-active.mobi",
+              "intentiq.com",
+              "inter1ads.com",
+              "ipredictive.com",
+              "ironsrc.com",
+              "iskyworker.com",
+              "jizzads.com",
+              "juicyads.com",
+              "kochava.com",
+              "leadbolt.com",
+              "leadbolt.net",
+              "leadboltads.net",
+              "leadboltapps.net",
+              "leadboltmobile.net",
+              "lenzmx.com",
+              "liveadvert.com",
+              "marketgid.com",
+              "marketo.com",
+              "mdotm.com",
+              "medialytics.com",
+              "medialytics.io",
+              "meetrics.com",
+              "meetrics.net",
+              "mgid.com",
+              "millennialmedia.com",
+              "mobadme.jp",
+              "mobfox.com",
+              "mobileadtrading.com",
+              "mobilityware.com",
+              "mojiva.com",
+              "mookie1.com",
+              "msads.net",
+              "mydas.mobi",
+              "nend.net",
+              "netshelter.net",
+              "nexage.com",
+              "owneriq.net",
+              "pixels.asia",
+              "plista.com",
+              "popads.net",
+              "powerlinks.com",
+              "propellerads.com",
+              "quantserve.com",
+              "rayjump.com",
+              "revdepo.com",
+              "rubiconproject.com",
+              "sape.ru",
+              "scorecardresearch.com",
+              "segment.com",
+              "serving-sys.com",
+              "sharethis.com",
+              "smaato.com",
+              "smaato.net",
+              "smartadserver.com",
+              "smartnews-ads.com",
+              "startapp.com",
+              "startappexchange.com",
+              "statcounter.com",
+              "steelhousemedia.com",
+              "stickyadstv.com",
+              "supersonic.com",
+              "taboola.com",
+              "tapjoy.com",
+              "tapjoyads.com",
+              "trafficjunky.com",
+              "trafficjunky.net",
+              "tribalfusion.com",
+              "turn.com",
+              "uberads.com",
+              "vidoomy.com",
+              "viglink.com",
+              "voicefive.com",
+              "wedolook.com",
+              "yadro.ru",
+              "yengo.com",
+              "zedo.com",
+              "zemanta.com",
+              "11h5.com",
+              "1kxun.mobi",
+              "26zsd.cn",
+              "519397.com",
+              "626uc.com",
+              "915.com",
+              "appget.cn",
+              "appuu.cn",
+              "coinhive.com",
+              "huodonghezi.cn",
+              "vcbn65.xyz",
+              "wanfeng1.com",
+              "wep016.top",
+              "win-stock.com.cn",
+              "zantainet.com",
+              "dh54wf.xyz",
+              "g2q3e.cn",
+              "114so.cn",
+              "go.10086.cn",
+              "hivedata.cc",
+              "navi.gd.chinamobile.com"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "remote",
+        "tag": "BanProgramAD",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/BanProgramAD.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "GoogleFCM",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/GoogleFCM.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "GoogleCN",
+        "format": "source",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/GoogleCN.json",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "SteamCN",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/SteamCN.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "GitHub",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/senshinya/singbox_ruleset@main/rule/GitHub/GitHub.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "inline",
+        "tag": "AI-Transit",
+        "rules": [
+          {
+            "domain_suffix": [
+              "poe.com",
+              "quoracdn.net",
+              "openrouter.ai",
+              "perplexity.ai",
+              "groq.com",
+              "together.ai",
+              "together.xyz"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "inline",
+        "tag": "SharedServices",
+        "rules": [
+          {
+            "domain": [
+              "browser-intake-datadoghq.com",
+              "rum.browser-intake-datadoghq.com",
+              "static.cloudflareinsights.com",
+              "challenges.cloudflare.com",
+              "cdn.workos.com",
+              "forwarder.workos.com",
+              "setup.workos.com",
+              "images.workoscdn.com",
+              "workos.imgix.net",
+              "humb.apple.com"
+            ],
+            "domain_suffix": [
+              "ct.sendgrid.net",
+              "algolia.net",
+              "api.statsig.com",
+              "auth0.com",
+              "client-api.arkoselabs.com",
+              "events.statsigapi.net",
+              "featuregates.org",
+              "host.livekit.cloud",
+              "identrust.com",
+              "intercom.io",
+              "intercomcdn.com",
+              "launchdarkly.com",
+              "observeit.net",
+              "segment.io",
+              "sentry.io",
+              "stripe.com",
+              "turn.livekit.cloud"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "remote",
+        "tag": "OpenAI",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/openai.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Gemini",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/senshinya/singbox_ruleset@main/rule/Gemini/Gemini.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Anthropic",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/senshinya/singbox_ruleset@main/rule/Anthropic/Anthropic.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "AI-MIX",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/AI.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Bing",
+        "format": "source",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Bing.json",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "OneDrive",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/onedrive.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "inline",
+        "tag": "OneDrive-Process",
+        "rules": [
+          {
+            "process_name": [
+              "OneDrive",
+              "OneDriveUpdater"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "remote",
+        "tag": "Microsoft",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/senshinya/singbox_ruleset@main/rule/Microsoft/Microsoft.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Apple",
+        "format": "source",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Apple.json",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Telegram",
+        "format": "source",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Telegram.json",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "NetEaseMusic",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/NetEaseMusic.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Epic",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Epic.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Origin",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Origin.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Sony",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Sony.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Steam",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Steam.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Nintendo",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Nintendo.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "YouTube",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/YouTube.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Netflix",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Netflix.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Google",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/senshinya/singbox_ruleset@main/rule/Google/Google.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Bahamut",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Bahamut.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "BilibiliHMT",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/BilibiliHMT.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "Bilibili",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/Ruleset/Bilibili.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "ChinaMedia",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/ChinaMedia.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "ProxyMedia",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/ProxyMedia.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "ProxyGFWlist",
+        "format": "source",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/ProxyGFWlist.json",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "ChinaDomain",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/ChinaDomain.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "ChinaCompanyIp",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/KaringX/karing-ruleset@sing/ACL4SSR/ChinaCompanyIp.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "inline",
+        "tag": "Download",
+        "rules": [
+          {
+            "domain_suffix": [
+              "smtp"
+            ],
+            "domain_keyword": [
+              "aria2"
+            ]
+          },
+          {
+            "process_name": [
+              "aria2c.exe",
+              "fdm.exe",
+              "Folx.exe",
+              "NetTransport.exe",
+              "Thunder.exe",
+              "Transmission.exe",
+              "uTorrent.exe",
+              "WebTorrent.exe",
+              "WebTorrent Helper.exe",
+              "qbittorrent.exe",
+              "DownloadService.exe",
+              "Weiyun.exe",
+              "baidunetdisk.exe"
+            ]
+          }
+        ]
+      },
+      {
+        "type": "remote",
+        "tag": "geoip-cn",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-private",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      },
+      {
+        "type": "remote",
+        "tag": "geosite-cn",
+        "format": "binary",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
+        "http_client": "rule-set",
+        "update_interval": "1d"
+      }
+    ],
+    "final": "漏网之鱼",
+    "auto_detect_interface": true,
+    "default_domain_resolver": "dns-direct"
+  },
+  "experimental": {
+    "cache_file": {
+      "enabled": true,
+      "store_fakeip": true
+    },
+    "clash_api": {
+      "external_controller": "127.0.0.1:9090",
+      "default_mode": "Rule",
+      "access_control_allow_origin": [
+        "http://127.0.0.1:9090",
+        "http://localhost:9090"
+      ]
+    }
+  }
+}

@@ -17,6 +17,30 @@
 
 [添加直连规则.yaml](https://raw.githubusercontent.com/mihomo-party-org/override-hub/main/yaml/%E6%B7%BB%E5%8A%A0%E7%9B%B4%E8%BF%9E%E8%A7%84%E5%88%99.yaml)
 
+### sing-box
+
+[ACL4SSR_Online_Full_WithIcon.sing-box.json](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.sing-box.json)
+
+由 `ACL4SSR_Online_Full_WithIcon.yaml` 派生的 sing-box 订阅转换模板，策略组、组成员和规则顺序与之一致（不含图标）。它不是可直接运行的配置：需要用 [sing-box-subscribe](https://github.com/Toperlock/sing-box-subscribe) 把订阅节点填入 `{all}`，并按 `filter` 正则分组。例如在其 `providers.json` 中把 `config_template` 设为上面的链接，`emoji` 设为 `0`，`prefix` 留空（地区和 `^pure-` 筛选依赖原始节点名），`auto_set_outbounds_dns` 留空。节点名不能与 `DIRECT`、`REJECT` 或策略组同名。
+
+- 使用 sing-box 1.14 配置格式，已用 sing-box 1.14.1 与 sing-box-subscribe `4782237` 验证。入站为 TUN（`auto_route`、`strict_route`；Linux 可自行加 `auto_redirect`）和 `127.0.0.1:7890` mixed。clash_api 监听 `127.0.0.1:9090`，未设 `secret`，CORS 只允许本地来源；使用网页面板时请设置 `secret` 并加入面板来源。`7890` 与 Mihomo Party 默认 mixed 端口相同，两者的 TUN 也会互相冲突，不要同时启用。
+- DNS：`geosite-cn`、`geosite-private` 等国内与局域网列表的域名经 223.5.5.5 DoH 返回真实 IP（`nas.lan` 这类局域网主机名公共 DNS 解析不了）。其余域名的 A/AAAA 查询返回 fake-ip（`198.18.0.0/15`、`fc00::/18`，TTL 1 秒），HTTPS/SVCB 查询返回空应答。
+- 这些 fake-ip 域名的连接：
+  - 按规则直连的 TCP 连接用 223.5.5.5 解析；按规则走代理的 TCP 连接把域名交给节点。
+  - UDP 连接，以及未命中列表、需要按 `GEOIP,CN` 判断的连接，先经 `自动选择` 用 8.8.8.8 DoH 解析，再以 IP 发出。
+  - 其他类型的查询也经 `自动选择` 用 8.8.8.8 解析。`自动选择` 没有可用节点时，这些解析失败，对应连接直接断开，即使最终会走直连；只有切到 Direct 模式能恢复 UDP，Global 模式不行。
+  - 在国内列表中、却被规则分到代理的域名，节点收到的是 223.5.5.5 解析出的 IP。
+- 停止 sing-box 后，系统或应用缓存的 fake-ip 会短暂失效；删除 `cache.db` 会重新分配 fake-ip。
+- `REJECT` 是指向本机未监听端口的占位出站，用于替代 Mihomo 的 REJECT，所以可能为空的组末尾都会带一个 `REJECT` 选项。筛选不到节点的组、`广告拦截` 与 `应用净化` 会连接失败，而不是回退直连。
+- 规则集从 jsDelivr 镜像直连下载（KaringX/karing-ruleset、senshinya/singbox_ruleset、MetaCubeX/meta-rules-dat），并缓存到 `cache.db`；首次启动时镜像不可达会导致启动失败。`BanAD` 内联了 ACL4SSR `70d11f1` 版本的快照，不会自动更新。`Download`、`AI-Transit`、`SharedServices`、`UnBan-Lowercase`、`OneDrive-Process` 也为内联。
+- 与 Mihomo 版的已知差异：
+  - 不支持 URL-REGEX；Android 包名形式的进程规则不生效。
+  - `ProxyGFWlist` 的转换源缺少 `ip138.com`；`OneDrive` 使用 geosite，会多出少量域名，例如 `sharepoint.cn`。
+  - 测速不检查 204 状态码；UDP 流量会跳过不支持 UDP 的节点，没有可用节点时落到 `REJECT`。
+  - TCP 连接中，IP 规则（最后的 `GEOIP,CN` 除外）只匹配目标已经是 IP 的连接。
+  - fake-ip 域名的 UDP 连接在匹配规则前就已解析，所有规则集里的 IP 段都会生效，例如 `WeChat` 包含腾讯云国际 AS132203，`Apple` 包含 `17.0.0.0/8`，还有局域网段。这类 UDP（如 QUIC）可能先被这些规则直连，与同域名的 TCP 以及 Mihomo 的 `no-resolve` 行为不同；解析失败的域名，其 UDP 连接会直接断开。
+- 其他：`LocalAreaNetwork` 包含 `100.64.0.0/10`，Tailscale 等 CGNAT 地址会直连；`strict_route` 在 Windows 上可能影响虚拟机网络。
+
 ### JavaScript
 
 [布丁狗的订阅转换.js](https://raw.githubusercontent.com/mihomo-party-org/override-hub/main/javascript/%E5%B8%83%E4%B8%81%E7%8B%97%E7%9A%84%E8%AE%A2%E9%98%85%E8%BD%AC%E6%8D%A2.js)
