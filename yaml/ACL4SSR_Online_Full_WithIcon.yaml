@@ -4,6 +4,7 @@ proxy-groups:
     type: select
     proxies:
       - 自动选择
+      - 日韩台自动
       - 台湾节点
       - 狮城节点
       - 纯净节点
@@ -27,6 +28,19 @@ proxy-groups:
     expected-status: 204
     include-all: true
     empty-fallback: REJECT
+    interval: 300
+    tolerance: 50
+  # Compare the currently selected proxy of each regional group.
+  - name: 日韩台自动
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png
+    type: url-test
+    proxies:
+      - 日本节点
+      - 台湾节点
+      - 韩国节点
+    empty-fallback: REJECT
+    url: https://www.gstatic.com/generate_204?override-hub=204
+    expected-status: 204
     interval: 300
     tolerance: 50
   - name: 电报消息
