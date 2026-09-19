@@ -43,10 +43,18 @@ proxy-groups:
       - 香港节点
       - 手动切换
       - DIRECT
+  # Manual selection keeps AI traffic on one node instead of latency-driven switching.
+  - name: AI固定出口
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
+    type: select
+    include-all: true
+    empty-fallback: REJECT
+    filter: (?i)^pure-.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)
   - name: OpenAI
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
     type: select
     proxies:
+      - AI固定出口
       - 节点选择
       - 自动选择
       - 纯净节点
@@ -63,6 +71,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
     proxies:
+      - AI固定出口
       - 节点选择
       - 自动选择
       - 纯净节点
@@ -79,6 +88,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
     proxies:
+      - AI固定出口
       - 节点选择
       - 自动选择
       - 纯净节点
@@ -95,6 +105,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
     proxies:
+      - AI固定出口
       - 节点选择
       - 自动选择
       - 纯净节点
@@ -120,6 +131,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
     type: select
     proxies:
+      - AI固定出口
       - 节点选择
       - 自动选择
       - 纯净节点
@@ -460,6 +472,7 @@ proxy-groups:
       - 手动切换
       - 自动选择
       - 电报消息
+      - AI固定出口
       - OpenAI
       - Gemini
       - Claude
