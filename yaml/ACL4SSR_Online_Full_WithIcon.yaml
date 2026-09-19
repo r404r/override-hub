@@ -773,7 +773,7 @@ rule-providers:
     type: http
 
 rules:
-  - "RULE-SET,LocalAreaNetwork,全球直连"
+  - "RULE-SET,LocalAreaNetwork,DIRECT"
   - "RULE-SET,UnBan,全球直连"
   - "RULE-SET,WeChat,全球直连"
   - "RULE-SET,BanAD,广告拦截"
