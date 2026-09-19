@@ -41,6 +41,25 @@
   - fake-ip 域名的 UDP 连接在匹配规则前就已解析，所有规则集里的 IP 段都会生效，例如 `WeChat` 包含腾讯云国际 AS132203，`Apple` 包含 `17.0.0.0/8`，还有局域网段。这类 UDP（如 QUIC）可能先被这些规则直连，与同域名的 TCP 以及 Mihomo 的 `no-resolve` 行为不同；解析失败的域名，其 UDP 连接会直接断开。
 - 其他：`LocalAreaNetwork` 包含 `100.64.0.0/10`，Tailscale 等 CGNAT 地址会直连；`strict_route` 在 Windows 上可能影响虚拟机网络。
 
+### 塔台（Tower）
+
+[ACL4SSR_Online_Full_WithIcon.tower.ini](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.tower.ini)
+
+由 `ACL4SSR_Online_Full_WithIcon.yaml` 派生的[塔台](https://github.com/pengchujin/tower)规则方案（subconverter INI 语法），策略组、组成员和规则顺序与之一致。在塔台“规则方案”中通过上面的链接导入；raw 链接不可达时可改用 jsDelivr 镜像 `https://testingcf.jsdelivr.net/gh/r404r/override-hub@main/yaml/ACL4SSR_Online_Full_WithIcon.tower.ini`（更新可能滞后），或复制文件内容以文本导入。节点来自塔台里的订阅，再由塔台导出 sing-box 等客户端配置。
+
+- 按塔台 1.0.21 源码编写，并在本机用模拟塔台行为的脚本和 sing-box 1.14.1 验证；尚未在塔台 App 中实际导入和导出。
+- 导入时塔台会下载全部 38 个规则列表（jsDelivr 镜像），任一下载失败都会中止导入。
+- 为适配塔台所做的调整：
+  - 塔台会把没有节点的组改为直连，所以原本空组拒绝的组都以 `REJECT` 作为最后一个成员，保持无节点时拒绝连接。它始终是成员：`手动切换`、`奈飞节点` 中会多一个 `REJECT` 选项，各地区测速组也会包含它。sing-box 中 `REJECT` 是 `block` 出站。
+  - 塔台导出 sing-box 时会丢弃 `GEOIP,CN`，所以在它之前加入了 ACL4SSR `ChinaIp.list`（仅 IPv4）。
+  - `UnBan` 中大小写混合的后缀补充了小写版本。
+- 导出 sing-box 时的限制：
+  - 进程名、URL-REGEX、IP-ASN 规则会被丢弃。
+  - 规则列表全部内联进配置，按模拟结果约 0.9 MB。列表更新后需要在塔台刷新并重新导出。
+  - 塔台的 sing-box 配置先解析所有连接再匹配规则：无法解析的域名连接会失败；IP 规则对所有连接生效，不同于 Mihomo 的 `no-resolve`。
+  - 图标和测速 `expected-status` 不会保留。
+- 为 Clash、Surge、Loon、Quantumult X、Egern 导出时不要开启塔台的“代理集合”：开启后 `REJECT` 会排在订阅节点之前，`手动切换`、`奈飞节点` 会默认选中 `REJECT`。sing-box 导出不受影响。
+
 ### JavaScript
 
 [布丁狗的订阅转换.js](https://raw.githubusercontent.com/mihomo-party-org/override-hub/main/javascript/%E5%B8%83%E4%B8%81%E7%8B%97%E7%9A%84%E8%AE%A2%E9%98%85%E8%BD%AC%E6%8D%A2.js)
