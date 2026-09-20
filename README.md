@@ -45,7 +45,7 @@
 
 [ACL4SSR_Online_Full_WithIcon.tower.ini](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.tower.ini)
 
-[塔台](https://github.com/pengchujin/tower)规则方案（subconverter INI 语法），以塔台内置的“ACL4SSR 全分组”（ACL4SSR `75f0101`）为底：内置规则和分组不改动，只在 4 个选择组末尾追加可选项。在此基础上只插入 `ACL4SSR_Online_Full_WithIcon.yaml` 的专属规则，并追加以下专属分组：`纯净节点`、`纯净节点-USA`、`AI固定出口`、`OpenAI`、`Gemini`、`Claude`、`AI中转`、`AI-MIX`、`共享服务`、`Google`、`Google直连例外`、`GitHub`、`日韩台自动`。
+[塔台](https://github.com/pengchujin/tower)规则方案（subconverter INI 语法），以塔台内置的“ACL4SSR 全分组”（ACL4SSR `75f0101`）为底：内置规则一行未改，内置分组的内容除下面列出的 5 个选择组新增可选项外保持原样，仅分组的列出顺序被重排。在此基础上只插入 `ACL4SSR_Online_Full_WithIcon.yaml` 的专属规则，并追加以下专属分组：`纯净节点`、`纯净节点-USA`、`AI固定出口`、`OpenAI`、`Gemini`、`Claude`、`AI中转`、`AI-MIX`、`共享服务`、`Google`、`Google直连例外`、`GitHub`、`日韩台自动`。
 
 - **导入**：在塔台“规则方案”中通过上面的链接或复制文本导入，节点来自塔台里的订阅。导入时塔台会下载全部规则列表，任一下载失败都会中止导入；其中 ACL4SSR 列表使用 raw.githubusercontent.com 固定版本，网络受限时请在可访问 GitHub 的环境下导入。
 - **沿用塔台内置方案的部分**（与 Mihomo 覆写不同）：
@@ -55,7 +55,9 @@
   - 没有 `GLOBAL` 组；保留 `💬 Ai平台`，但 AI 域名会先被专属规则匹配；
   - 地区组筛选不到节点时会被塔台改为直连。
 - **失败即拒绝**：`纯净节点`、`纯净节点-USA`、`日韩台自动` 以 `REJECT` 结尾，保证没有匹配节点时被拒绝而不是直连；sing-box 中 `REJECT` 是 `block` 出站。`日韩台自动` 直接按严格的日本、台湾、韩国节点名正则测速，不再嵌套内置地区组，因为塔台会把没有节点的地区组改为直连。
-- **追加的可选项**：`🚀 节点选择` 末尾加了 `日韩台自动` 和两个 pure 组；`📹 油管视频`、`🌍 国外媒体`、`📢 谷歌FCM` 末尾加了两个 pure 组。原有默认项不变。
+- **追加的可选项**：`🚀 节点选择` 的第二项为 `日韩台自动`，末尾加了两个 pure 组；`📹 油管视频`、`🌍 国外媒体`、`📢 谷歌FCM` 末尾加了两个 pure 组；`💬 Ai平台` 的首项加了 `AI固定出口`（该组默认项因此变为 `AI固定出口`）。其余组的默认项不变。
+- **分组顺序**：`🚀 节点选择`、`🚀 手动切换`、`♻️ 自动选择` 在最前，其后是 AI 相关组，再是其他服务组与直连/拦截组，节点类分组（地区、pure、奈飞、`日韩台自动`）排在最后。顺序只影响列表显示。
+- **`💬 Ai平台`**：保留内置分组与其两条规则。它的两个列表共 52 条规则，其中 51 条会先被前面的专属规则匹配；已知例外是 `challenges.cloudflare.com` 的子域（专属规则用的是精确域名，内置列表用的是后缀），这类请求仍由 `💬 Ai平台` 处理，没有 pure 节点时会被拒绝。
 - **导出 sing-box 时**：
   - ACL4SSR 列表会被塔台换成其预编译规则集（sing-box 启动时下载），其余列表内联；按模拟结果配置约 0.3–0.4 MB。
   - `GEOIP,CN`、进程名、URL-REGEX、IP-ASN 规则会被丢弃，与塔台内置方案相同。
