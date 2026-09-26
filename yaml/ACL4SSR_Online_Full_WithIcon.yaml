@@ -5,6 +5,7 @@ proxy-groups:
     proxies:
       - 自动选择
       - 日韩台自动
+      - 纯日韩台自动
       - 台湾节点
       - 狮城节点
       - 纯净节点
@@ -39,6 +40,19 @@ proxy-groups:
       - 台湾节点
       - 韩国节点
     empty-fallback: REJECT
+    url: https://www.gstatic.com/generate_204?override-hub=204
+    expected-status: 204
+    interval: 300
+    tolerance: 50
+  # Same regions as 日韩台自动, but restricted to pure- nodes and matched directly
+  # so non-pure nodes cannot enter through a regional group. Tokens are copied from
+  # 日本节点, 韩国节点 and 台湾节点 to keep the regional verdicts identical.
+  - name: 纯日韩台自动
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png
+    include-all: true
+    empty-fallback: REJECT
+    filter: (?i)^pure-.*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?:[^A-Za-z]|$)|首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?:[^A-Za-z]|$)|台|新北|彰化|🇹🇼|(?<![A-Za-z])(?:TW|Taiwan)(?:[^A-Za-z]|$))
+    type: url-test
     url: https://www.gstatic.com/generate_204?override-hub=204
     expected-status: 204
     interval: 300
