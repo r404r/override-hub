@@ -21,8 +21,10 @@
 
 [ACL4SSR_Online_Full_WithIcon.sing-box.json](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.sing-box.json)
 
-由 `ACL4SSR_Online_Full_WithIcon.yaml` 派生的 sing-box 订阅转换模板，策略组、组成员和规则顺序与之一致（不含图标）。它不是可直接运行的配置：需要用 [sing-box-subscribe](https://github.com/Toperlock/sing-box-subscribe) 把订阅节点填入 `{all}`，并按 `filter` 正则分组。例如在其 `providers.json` 中把 `config_template` 设为上面的链接，`emoji` 设为 `0`，`prefix` 留空（地区和 `^pure-` 筛选依赖原始节点名），`auto_set_outbounds_dns` 留空。节点名不能与 `DIRECT`、`REJECT` 或策略组同名。
+由 `ACL4SSR_Online_Full_WithIcon.yaml` 派生的 sing-box 订阅转换模板，策略组、组成员和规则顺序与之一致（不含图标）。它不是可直接运行的配置：需要用 [sing-box-subscribe](https://github.com/Toperlock/sing-box-subscribe) 把订阅节点填入 `{all}`，并按 `filter` 正则分组。例如在其 `providers.json` 中把 `config_template` 设为上面的链接，`emoji` 设为 `0`，`prefix` 留空（地区和 `pure` 筛选依赖原始节点名），`auto_set_outbounds_dns` 留空。节点名不能与 `DIRECT`、`REJECT` 或策略组同名。
 
+- **`pure` 组的判定口径**：`纯净节点`、`纯净节点-USA`、`AI固定出口`、`纯日韩台自动` 四个组要求「节点名**任意位置**含 `pure`」**且**「含对应地区关键词」，两者先后顺序不限 —— `pure-JP-01`、`JP-01-pure`、`hk-pure-JP-01`、`pure日本02` 都算。`pure` 的**前一个字符不能是 ASCII 字母**：这既排除了 `impure`、`unpure`（字面意思相反），也顺带排除了 `USpure`、`日本-JPpure`、`SuperPure-US`、`LosAngelesPure` 这类 `pure` 紧贴前一个英文字母的名字；CJK 在前可以，`东京Pure`、`日本pure` 算。地区关键词一侧保留原有词边界，因此 `pureJP-01`、`pure-USA-01`、`pure-JPN-01` 这类关键词紧贴字母的名字也**不算**。该口径对塔台方案同样适用。
+- **注意误收**：判定只看名字，因此机场的套餐名、公告或信息条目里出现 `pure` 且同时含地区关键词时也会被算作纯节点，例如 `纯净-pure套餐-美国`、`官网 purevpn.example.com 日本`。名字含地区词的中转节点（`中转-pure-美国-02`）真实出口也未必在该地区。建议在塔台中开启「过滤订阅节点信息」；Mihomo 侧没有对应开关，请自行确认各 pure 组当前选中的节点。
 - 使用 sing-box 1.14 配置格式，已用 sing-box 1.14.1 与 sing-box-subscribe `4782237` 验证。入站为 TUN（`auto_route`、`strict_route`；Linux 可自行加 `auto_redirect`）和 `127.0.0.1:7890` mixed。clash_api 监听 `127.0.0.1:9090`，未设 `secret`，CORS 只允许本地来源；使用网页面板时请设置 `secret` 并加入面板来源。`7890` 与 Mihomo Party 默认 mixed 端口相同，两者的 TUN 也会互相冲突，不要同时启用。
 - DNS：`geosite-cn`、`geosite-private` 等国内与局域网列表的域名经 223.5.5.5 DoH 返回真实 IP（`nas.lan` 这类局域网主机名公共 DNS 解析不了）。其余域名的 A/AAAA 查询返回 fake-ip（`198.18.0.0/15`、`fc00::/18`，TTL 1 秒），HTTPS/SVCB 查询返回空应答。
 - 这些 fake-ip 域名的连接：
@@ -54,7 +56,7 @@
   - `🎥 奈飞视频` 默认 `🎥 奈飞节点`；
   - 没有 `GLOBAL` 组；保留 `💬 Ai平台`，但 AI 域名会先被专属规则匹配；
   - 地区组筛选不到节点时会被塔台改为直连。
-- **失败即拒绝**：`纯净节点`、`纯净节点-USA`、`日韩台自动`、`纯日韩台自动` 以 `REJECT` 结尾，保证没有匹配节点时被拒绝而不是直连；sing-box 中 `REJECT` 是 `block` 出站。`日韩台自动` 直接按严格的日本、台湾、韩国节点名正则测速，不再嵌套内置地区组，因为塔台会把没有节点的地区组改为直连。`纯日韩台自动` 在此之上再要求节点名以 `pure-` 开头，正则与 Mihomo 覆写中的同名组一致。
+- **失败即拒绝**：`纯净节点`、`纯净节点-USA`、`日韩台自动`、`纯日韩台自动` 以 `REJECT` 结尾，保证没有匹配节点时被拒绝而不是直连；sing-box 中 `REJECT` 是 `block` 出站。`日韩台自动` 直接按严格的日本、台湾、韩国节点名正则测速，不再嵌套内置地区组，因为塔台会把没有节点的地区组改为直连。`纯日韩台自动` 在此之上再要求节点名**含有** `pure`，正则与 Mihomo 覆写中的同名组一致。
 - **追加的可选项**：`🚀 节点选择` 的第二、三项为 `日韩台自动` 和 `纯日韩台自动`，末尾加了两个 pure 组；`📹 油管视频`、`🌍 国外媒体`、`📢 谷歌FCM` 末尾加了两个 pure 组；`💬 Ai平台` 的首项加了 `AI固定出口`（该组默认项因此变为 `AI固定出口`）。其余组的默认项不变。
 - **分组顺序**：`🚀 节点选择`、`🚀 手动切换`、`♻️ 自动选择` 在最前，其后是 AI 相关组，再是其他服务组与直连/拦截组，节点类分组（地区、pure、奈飞、`日韩台自动`、`纯日韩台自动`）排在最后。顺序只影响列表显示。
 - **`💬 Ai平台`**：保留内置分组与其两条规则。它的两个列表共 52 条规则，其中 51 条会先被前面的专属规则匹配；已知例外是 `challenges.cloudflare.com` 的子域（专属规则用的是精确域名，内置列表用的是后缀），这类请求仍由 `💬 Ai平台` 处理，没有 pure 节点时会被拒绝。
@@ -81,7 +83,7 @@
   - `📺 巴哈姆特` 默认的 `🇨🇳 台湾节点` 从自动测速变为该组第一个节点。
   - ACL4SSR `ProxyGFWlist` 换为 `ProxyLite`：`ProxyGFWlist` 中有、`ProxyLite` 中没有的约 5,500 个域名改由最后的 `🐟 漏网之鱼` 决定，默认同样走 `🚀 节点选择`。如果 `🐟 漏网之鱼` 被选为直连，这些域名也会直连。约 20 个同时在国内列表中的域名改为直连。
 - **导入后请检查**：
-  - 地区组沿用塔台内置的宽松正则，并且不区分大小写，第一个匹配的节点可能是“剩余流量”之类的信息节点，或名字里碰巧带 US、台等字样的其他地区节点。建议在塔台中开启“过滤订阅节点信息”，导入后在 sing-box 分组页确认各地区组的当前节点。
+  - 地区组沿用塔台内置的宽松正则，并且不区分大小写，第一个匹配的节点可能是“剩余流量”之类的信息节点，或名字里碰巧带 US、台等字样的其他地区节点。**四个 pure 组同样如此**：它们只看名字里有没有 `pure` 和地区关键词，套餐名或公告条目命中后，在本方案里 `纯净节点` 是 `select`、默认取组内第一个匹配项，可能直接落在信息条目上。建议在塔台中开启“过滤订阅节点信息”，导入后在 sing-box 分组页确认各地区组与各 pure 组的当前节点。
   - sing-box 按组名记住手动选择，从原方案切换过来时，原来的选择可能沿用。
 - **效果**：在 Linux 上用 sing-box 1.14.1 模拟 120 个节点、GOGC 与 iOS 相同（Go 内存上限按 50 MiB，iOS 为 40 MiB），启动时进程内存峰值约减少 4 MiB；节点更少时减少得更少。这不是 iOS 实测，实际效果以设备为准。导出的 sing-box 配置约为原方案的四分之三（开启“优先使用规则集”时本机实测 368 KiB vs 503 KiB）——早先“约为一半”的说法基于 2026-09-20-001 的体积，此后两套方案都内联了约 233 KB 的国内 IP 列表，比例已经变了。
 - **可能的其他因素**：订阅节点数量、自动测速组中的 Hysteria2/TUIC 等 QUIC 节点，影响大小尚未测量。如需定位，可在 sing-box App 的“工具 → 内存不足报告”（OOM Report）中导出报告；分享时请关闭“附带配置”（With Configuration，含节点凭证）。

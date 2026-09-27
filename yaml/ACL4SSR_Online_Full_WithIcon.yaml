@@ -51,7 +51,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Auto.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)^pure-.*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?:[^A-Za-z]|$)|首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?:[^A-Za-z]|$)|台|新北|彰化|🇹🇼|(?<![A-Za-z])(?:TW|Taiwan)(?:[^A-Za-z]|$))
+    filter: (?i)^(?=.*(?<![A-Za-z])pure)(?=.*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?:[^A-Za-z]|$)|首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?:[^A-Za-z]|$)|台|新北|彰化|🇹🇼|(?<![A-Za-z])(?:TW|Taiwan)(?:[^A-Za-z]|$))).*
     type: url-test
     url: https://www.gstatic.com/generate_204?override-hub=204
     expected-status: 204
@@ -79,7 +79,7 @@ proxy-groups:
       - 纯净节点-USA
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)^pure-.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)
+    filter: (?i)^(?=.*(?<![A-Za-z])pure)(?=.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)).*
   - name: OpenAI
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Bot.png
     type: select
@@ -441,7 +441,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)^pure-.*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(JP|Japan)(?:[^A-Za-z]|$)|美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)
+    filter: (?i)^(?=.*(?<![A-Za-z])pure)(?=.*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(JP|Japan)(?:[^A-Za-z]|$)|美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)).*
     type: url-test
     url: https://www.gstatic.com/generate_204?override-hub=204
     expected-status: 204
@@ -451,7 +451,7 @@ proxy-groups:
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Proxy.png
     include-all: true
     empty-fallback: REJECT
-    filter: (?i)^pure-.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)
+    filter: (?i)^(?=.*(?<![A-Za-z])pure)(?=.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)).*
     type: url-test
     url: https://www.gstatic.com/generate_204?override-hub=204
     expected-status: 204
