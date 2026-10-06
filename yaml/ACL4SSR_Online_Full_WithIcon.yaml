@@ -159,6 +159,7 @@ proxy-groups:
     type: select
     proxies:
       - 节点选择
+      - SPEC节点
       - DIRECT
       - OpenAI
       - Gemini
@@ -234,6 +235,7 @@ proxy-groups:
       - 自动选择
       - 纯净节点
       - 纯净节点-USA
+      - SPEC节点
       - 香港节点
       - 台湾节点
       - 狮城节点
