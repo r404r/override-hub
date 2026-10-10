@@ -1014,6 +1014,30 @@
         "outbound": "电报消息"
       },
       {
+        "ip_cidr": [
+          "91.105.192.0/23"
+        ],
+        "outbound": "电报消息"
+      },
+      {
+        "ip_cidr": [
+          "185.76.151.0/24"
+        ],
+        "outbound": "电报消息"
+      },
+      {
+        "ip_cidr": [
+          "2001:b28:f23c::/48"
+        ],
+        "outbound": "电报消息"
+      },
+      {
+        "ip_cidr": [
+          "2a0a:f280::/32"
+        ],
+        "outbound": "电报消息"
+      },
+      {
         "rule_set": "NetEaseMusic",
         "outbound": "网易音乐"
       },

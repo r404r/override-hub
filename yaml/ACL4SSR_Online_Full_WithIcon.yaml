@@ -890,6 +890,11 @@ rules:
   - "RULE-SET,Microsoft,微软服务"
   - "RULE-SET,Apple,苹果服务"
   - "RULE-SET,Telegram,电报消息"
+  # Official ranges (core.telegram.org/resources/cidr.txt) the provider list does not cover.
+  - "IP-CIDR,91.105.192.0/23,电报消息,no-resolve"
+  - "IP-CIDR,185.76.151.0/24,电报消息,no-resolve"
+  - "IP-CIDR6,2001:b28:f23c::/48,电报消息,no-resolve"
+  - "IP-CIDR6,2a0a:f280::/32,电报消息,no-resolve"
   - "RULE-SET,NetEaseMusic,网易音乐"
   - "RULE-SET,Epic,游戏平台"
   - "RULE-SET,Origin,游戏平台"
