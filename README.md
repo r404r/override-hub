@@ -46,6 +46,27 @@
   - fake-ip 域名的 UDP 连接在匹配规则前就已解析，所有规则集里的 IP 段都会生效，例如 `WeChat` 包含腾讯云国际 AS132203，`Apple` 包含 `17.0.0.0/8`，还有局域网段。这类 UDP（如 QUIC）可能先被这些规则直连，与同域名的 TCP 以及 Mihomo 的 `no-resolve` 行为不同；解析失败的域名，其 UDP 连接会直接断开。
 - 其他：`LocalAreaNetwork` 包含 `100.64.0.0/10`，Tailscale 等 CGNAT 地址会直连；`strict_route` 在 Windows 上可能影响虚拟机网络。
 
+### Shadowrocket（小火箭，iOS）
+
+[ACL4SSR_Online_Full_WithIcon.shadowrocket.conf](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.shadowrocket.conf)
+
+由 `ACL4SSR_Online_Full_WithIcon.yaml` 派生的 Shadowrocket 配置文件，43 个策略组、86 条规则（其中 37 条是远程规则集引用）。**域名侧与 Mihomo 版等价**：四类域名规则（`DOMAIN-SUFFIX` 10983、`DOMAIN` 235、`DOMAIN-KEYWORD` 116、`DOMAIN-REGEX` 1）两侧条数相同，135 个回放主机名首个命中的规则与目标策略两侧逐条一致。
+
+- **导入**：Shadowrocket 首页 →「配置」→ 右上 `+` → 粘贴上面的链接（或从「文件」App 导入本地副本），导入后点选使其生效。
+- **节点从哪来**：`[Proxy]` 段**故意留空**，文件里不含任何节点、订阅链接或凭证。节点用 Shadowrocket 自己的订阅/手动添加，策略组通过 `policy-regex-filter` 按节点名正则吃到它们 —— `纯净节点`、`SPEC节点`、各地区组等 13 个组都靠这个机制。**导入后请先确认这些组里确实有节点**；若为空，说明你的节点名与正则不匹配，或需要改用 `<订阅名>,use=true` 的写法。
+- **`pure` 与 `-spec-` 的判定口径**与上面 sing-box 一节完全相同（正则从主配置原样搬运），不再重复。
+- **与 Mihomo 版的已知差异**（由生成器逐项统计，文件头部也有同样的摘要）：
+  - **15 个组失去 `empty-fallback: REJECT`**。Shadowrocket 没有等价物，筛不到节点的组会发生什么**未经验证**。`[General]` 里的 `udp-policy-not-supported-behaviour = REJECT` 只覆盖 UDP，不能替代它。这是与 Mihomo 版最实质的差距。
+  - 12 个 `url-test` 组失去 `expected-status: 204`；测速地址去掉了查询串（`url=` 是键值对，值里不能带 `=`）；**测速间隔由 300 秒改为 600 秒**（手机省电，只改重挑频率、不改规则命中）。
+  - IPv6 规则一律写 `IP-CIDR` 而非 `IP-CIDR6`（Shadowrocket 的规则类型表里没有后者）。远程列表里自带的 14 条 `IP-CIDR6` 会被忽略，其中 `LocalAreaNetwork` 的 4 条私网段已在本文件中以 `IP-CIDR` 原样补回，净损失 10 条（`ChinaDomain` 4、`Telegram` 3、`ProxyGFWlist` 3）。
+  - 3 个只发布 YAML 形态的规则集换成纯文本源：`GitHub` 与 `OpenAI` 换后条目集合**逐条相同**；`Google` 换成 blackmatrix7 的 Shadowrocket 版，**没有域名条目增减**，差别是 5 条 IP 规则多了 `no-resolve`、6 条 `PROCESS-NAME`（Android/Windows 进程名）被去掉、3 条 `USER-AGENT` 被加上。
+  - Shadowrocket 支持而 Mihomo 会丢弃的 9 条 `URL-REGEX` 在这里会生效（迅雷/BT/360 → 全球直连等）；不开 MITM 时它们只能匹配明文 HTTP，实际影响面很小。
+  - 去掉了 `GLOBAL` 组（Mihomo 专有，且主配置里没有任何规则引用它）。
+  - `MATCH` 写成 `FINAL,漏网之鱼,dns-failed`。`dns-failed` 让本地解析失败的请求仍然交给兜底策略，而不是直接断开 —— Mihomo 侧 fake-ip 本来就不会在匹配阶段遇到解析失败，加这个标记是为了让两侧表现一致。把 `漏网之鱼` 手动设成 `DIRECT` 时该标记失效。
+- **`[General]` 是这份文件新加的**（主配置不含 `dns`/`tun` 等段，Mihomo 侧那些值全是内核默认）：`dns-server` 固定为两条国内加密 DNS，因为末尾 `GEOIP,CN` 要靠国内解析结果才能把没有域名规则的国内站点判成直连；`hijack-dns = *:53` 与 Mihomo 默认的全量劫持同立场；`ipv6 = false`；`fallback-dns-server` 与 `block-quic` 留成注释行，需要时自行打开。
+- **规则集可达性**：37 个远程规则集中 29 个走 `testingcf.jsdelivr.net`，**8 个走 `raw.githubusercontent.com`**。后者在部分网络下不可达，而 Shadowrocket 没有 Mihomo 那样的本地 provider 缓存；若导入后多数域名都落到兜底组，先查这一项。
+- **验证范围**：以上全部来自静态比对与格式取证 —— 规则链逐条取回核对、策略引用闭包检查、与 Mihomo 侧的域名规则逐条等价比对。**没有在 iOS 设备上导入运行过**，因此不对延迟、连通性或分流效果作任何声称。文件由脚本从主配置生成，请勿手改。
+
 ### 塔台（Tower）
 
 [ACL4SSR_Online_Full_WithIcon.tower.ini](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.tower.ini)
