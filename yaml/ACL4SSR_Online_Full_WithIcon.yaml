@@ -665,8 +665,11 @@ rule-providers:
     type: inline
     behavior: classical
     payload:
-      - DOMAIN,browser-intake-datadoghq.com
-      - DOMAIN,rum.browser-intake-datadoghq.com
+      # Datadog RUM intake is per-region and the region is part of the name itself:
+      # browser-intake-us5-datadoghq.com is a sibling of browser-intake-datadoghq.com,
+      # not a subdomain, so neither DOMAIN nor DOMAIN-SUFFIX can reach it. Keyword is
+      # the only form that covers every region and both .com and .eu.
+      - DOMAIN-KEYWORD,datadoghq
       - DOMAIN,static.cloudflareinsights.com
       - DOMAIN,challenges.cloudflare.com
       - DOMAIN,cdn.workos.com
@@ -690,6 +693,8 @@ rule-providers:
       - DOMAIN-SUFFIX,observeit.net
       - DOMAIN-SUFFIX,segment.io
       - DOMAIN-SUFFIX,sentry.io
+      # Numbered hosts (api2/api3), so the suffix form rather than an exact DOMAIN.
+      - DOMAIN-SUFFIX,siftscience.com
       - DOMAIN-SUFFIX,stripe.com
       - DOMAIN-SUFFIX,turn.livekit.cloud
   Anthropic:
@@ -863,6 +868,9 @@ rules:
   - "RULE-SET,WeChat,全球直连"
   - "RULE-SET,BanAD,广告拦截"
   - "RULE-SET,BanProgramAD,应用净化"
+  # Google/Firebase ad serving. Its siblings app-analytics-services.com and
+  # app-measurement.com are in Google.list; this one is in no upstream list.
+  - "DOMAIN-SUFFIX,app-ads-services.com,应用净化"
   - "RULE-SET,GoogleFCM,谷歌FCM"
   - "RULE-SET,GoogleCN,Google直连例外"
   - "RULE-SET,SteamCN,全球直连"

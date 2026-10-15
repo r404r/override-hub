@@ -891,6 +891,12 @@
         "outbound": "应用净化"
       },
       {
+        "domain_suffix": [
+          "app-ads-services.com"
+        ],
+        "outbound": "应用净化"
+      },
+      {
         "rule_set": "GoogleFCM",
         "outbound": "谷歌FCM"
       },
@@ -1826,9 +1832,10 @@
         "tag": "SharedServices",
         "rules": [
           {
+            "domain_keyword": [
+              "datadoghq"
+            ],
             "domain": [
-              "browser-intake-datadoghq.com",
-              "rum.browser-intake-datadoghq.com",
               "static.cloudflareinsights.com",
               "challenges.cloudflare.com",
               "cdn.workos.com",
@@ -1854,6 +1861,7 @@
               "observeit.net",
               "segment.io",
               "sentry.io",
+              "siftscience.com",
               "stripe.com",
               "turn.livekit.cloud"
             ]
