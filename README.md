@@ -71,6 +71,21 @@
 - **规则集可达性**：37 个远程规则集中 29 个走 `testingcf.jsdelivr.net`，**8 个走 `raw.githubusercontent.com`**。后者在部分网络下不可达，而 Shadowrocket 没有 Mihomo 那样的本地 provider 缓存；若导入后多数域名都落到兜底组，先查这一项。
 - **验证范围**：以上全部来自静态比对与格式取证 —— 规则链逐条取回核对、策略引用闭包检查、与 Mihomo 侧的域名规则逐条等价比对。**没有在 iOS 设备上导入运行过**，因此不对延迟、连通性或分流效果作任何声称。文件由脚本从主配置生成，请勿手改。
 
+### Stash（iOS/macOS）
+
+[stash/block-quic.stoverride](https://raw.githubusercontent.com/r404r/override-hub/main/stash/block-quic.stoverride)
+
+Stash 专用覆写（`.stoverride`），只做一件事：拒绝 UDP/443，让 HTTP/3 回落到 TCP。与 `ACL4SSR_Online_Full_WithIcon.yaml` 独立，两者可同时启用。
+
+- **导入**：在 Stash 中添加远程覆写，粘贴上面的链接；随后在订阅/配置的覆写列表里启用它。
+- **必须放在主覆写的下方**。Stash 的覆写「按照从上到下的顺序依次覆盖」，而同名数组「会插入到原数组前面」，所以越靠下的覆写其规则在合并后越靠前。放到主覆写上方，这条规则就会落在主覆写末尾的 `MATCH,漏网之鱼` 之后，永远不命中，而且界面上不报错。启用后请在 Stash 的规则页确认它排在第一条。
+- **它不只影响代理流量**：所有目的端口为 443 的 UDP 都被拒，国内直连的 QUIC（B 站视频、部分 DoH3、iCloud 专用代理）同样受影响；它还排在主覆写的 `RULE-SET,LocalAreaNetwork,DIRECT` 之前，所以**局域网内的 UDP/443 也会被拒**（实测 `192.168.1.1:443` 落 REJECT，而 `192.168.1.1:53` 仍直连）。Stash 官方 FAQ 的示例是把 QUIC 拒绝放在 `GEOIP,CN,DIRECT` 之后、只针对代理流量；文件末尾的注释里给了对应的 `NOT,((GEOIP,CN))` 版本，以及一条放过私网段的版本（`GEOIP,CN` 救不了局域网 —— 私网地址不属于 CN）。
+- **用 `REJECT` 而不是 `REJECT-DROP`**：官方规则文档写明前者「立即返回错误」、后者「静默丢弃」。要让应用尽快放弃 QUIC 改走 TCP，需要的是立即失败。
+- 文件末尾另有两条注释选项：`no-track`（隐藏被拒连接，避免连接列表刷屏，建议确认规则生效后再加）、`pre-matching`（Stash iOS/tvOS 3.7+、macOS 4.4+ 的 Beta 特性，UDP 首包直接回 ICMP 端口不可达，回落更快，且不受上面的顺序问题影响；低版本行为未验证）。
+- **若节点本身是 Hysteria2 / TUIC 这类基于 UDP/443 的协议**，启用后请确认节点仍可用。Clash 系内核通常不把自己拨号的出站送进规则引擎，但这一点在 Stash 上未经验证。
+- **验证范围**：规则语法与语义在 Mihomo v1.19.31 真内核上实测通过（UDP→:443 命中 `AND((Network,udp) && (DstPort,443))` 落 REJECT，UDP→:53 不受影响，`mihomo -t` rc 0）；Stash 侧的判定全部来自官方文档原文（覆写页 2026-10-14、规则类型页 2026-08-25），**没有在 iOS/macOS 设备上运行过**，不对延迟、连通性或省电作任何声称。
+- 回滚：在 Stash 中停用该覆写即可，不影响主覆写。
+
 ### 塔台（Tower）
 
 [ACL4SSR_Online_Full_WithIcon.tower.ini](https://raw.githubusercontent.com/r404r/override-hub/main/yaml/ACL4SSR_Online_Full_WithIcon.tower.ini)
