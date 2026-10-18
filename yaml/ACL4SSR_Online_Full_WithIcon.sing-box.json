@@ -103,6 +103,7 @@
         "日本节点",
         "美国节点",
         "韩国节点",
+        "英国节点",
         "香港节点",
         "手动切换",
         "DIRECT"
@@ -756,6 +757,25 @@
       ]
     },
     {
+      "type": "urltest",
+      "tag": "英国节点",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:英国|伦敦|🇬🇧|(?<![A-Za-z])(?:UK|GBR|London|Britain|British|England|United Kingdom)(?![A-Za-z]))"
+          ]
+        }
+      ]
+    },
+    {
       "type": "selector",
       "tag": "奈飞节点",
       "outbounds": [
@@ -815,6 +835,7 @@
         "台湾节点",
         "狮城节点",
         "韩国节点",
+        "英国节点",
         "奈飞节点",
         "{all}"
       ]

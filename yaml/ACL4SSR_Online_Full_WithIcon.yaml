@@ -14,6 +14,7 @@ proxy-groups:
       - 日本节点
       - 美国节点
       - 韩国节点
+      - 英国节点
       - 香港节点
       - 手动切换
       - DIRECT
@@ -508,6 +509,18 @@ proxy-groups:
     expected-status: 204
     interval: 300
     tolerance: 50
+  # `GB` is deliberately not a token: it is also the unit every subscription writes its
+  # traffic counter in, so it would pull pseudo nodes like `剩余流量：100.5GB` into the group.
+  - name: 英国节点
+    icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/United_Kingdom.png
+    include-all: true
+    empty-fallback: REJECT
+    filter: (?i)英国|伦敦|🇬🇧|(?<![A-Za-z])(?:UK|GBR|London|Britain|British|England|United Kingdom)(?![A-Za-z])
+    type: url-test
+    url: https://www.gstatic.com/generate_204?override-hub=204
+    expected-status: 204
+    interval: 300
+    tolerance: 50
   - name: 奈飞节点
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Netflix.png
     include-all: true
@@ -559,6 +572,7 @@ proxy-groups:
       - 台湾节点
       - 狮城节点
       - 韩国节点
+      - 英国节点
       - 奈飞节点
 
 rule-providers:
