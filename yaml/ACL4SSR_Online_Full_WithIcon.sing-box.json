@@ -101,6 +101,7 @@
         "纯净节点-USA",
         "SPEC节点",
         "SPEC-ORACLE",
+        "SPEC-ORACLE手选",
         "日本节点",
         "美国节点",
         "韩国节点",
@@ -770,6 +771,22 @@
       "url": "https://www.gstatic.com/generate_204",
       "interval": "5m",
       "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:(-spec-.*(oracle|甲骨文)|(oracle|甲骨文).*-spec-))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "SPEC-ORACLE手选",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
       "filter": [
         {
           "action": "include",

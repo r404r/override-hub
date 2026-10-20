@@ -12,6 +12,7 @@ proxy-groups:
       - 纯净节点-USA
       - SPEC节点
       - SPEC-ORACLE
+      - SPEC-ORACLE手选
       - 日本节点
       - 美国节点
       - 韩国节点
@@ -553,6 +554,14 @@ proxy-groups:
     expected-status: 204
     interval: 300
     tolerance: 50
+  # Same node set as SPEC-ORACLE, picked by hand. A select group runs no health check, so it
+  # costs no periodic probe traffic and the choice stays where it is put until changed.
+  - name: SPEC-ORACLE手选
+    icon: https://testingcf.jsdelivr.net/gh/shindgewongxj/WHATSINStash@master/icon/select.png
+    include-all: true
+    empty-fallback: REJECT
+    filter: (?i)(-spec-.*(oracle|甲骨文)|(oracle|甲骨文).*-spec-)
+    type: select
   - name: 台湾节点
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/Taiwan.png
     include-all: true
