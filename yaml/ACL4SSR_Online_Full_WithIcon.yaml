@@ -66,6 +66,10 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -81,6 +85,7 @@ proxy-groups:
     proxies:
       - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
     include-all: true
     empty-fallback: REJECT
     filter: (?i)^(?=.*(?<![A-Za-z])pure)(?=.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)).*
@@ -91,9 +96,11 @@ proxy-groups:
       - AI固定出口
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -109,9 +116,11 @@ proxy-groups:
       - AI固定出口
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -127,9 +136,11 @@ proxy-groups:
       - AI固定出口
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -145,9 +156,11 @@ proxy-groups:
       - AI固定出口
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -161,7 +174,10 @@ proxy-groups:
     type: select
     proxies:
       - 节点选择
+      - 纯日韩台自动
+      - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
       - DIRECT
       - OpenAI
       - Gemini
@@ -173,9 +189,11 @@ proxy-groups:
       - AI固定出口
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 台湾节点
       - 日本节点
@@ -189,8 +207,11 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 香港节点
       - 台湾节点
@@ -206,6 +227,10 @@ proxy-groups:
       - 节点选择
       - 自动选择
       - 奈飞节点
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 狮城节点
       - 香港节点
       - 台湾节点
@@ -235,9 +260,11 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
       - SPEC节点
+      - SPEC-ORACLE
       - 香港节点
       - 台湾节点
       - 狮城节点
@@ -262,8 +289,11 @@ proxy-groups:
     proxies:
       - DIRECT
       - 节点选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 台湾节点
       - 狮城节点
@@ -277,8 +307,11 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 台湾节点
       - 狮城节点
@@ -301,8 +334,11 @@ proxy-groups:
     proxies:
       - 节点选择
       - 自动选择
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 香港节点
       - 台湾节点
@@ -317,6 +353,10 @@ proxy-groups:
     proxies:
       - DIRECT
       - 节点选择
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 香港节点
       - 台湾节点
@@ -330,6 +370,10 @@ proxy-groups:
     proxies:
       - DIRECT
       - 节点选择
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 香港节点
       - 台湾节点
@@ -343,6 +387,10 @@ proxy-groups:
     proxies:
       - 节点选择
       - DIRECT
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 香港节点
       - 台湾节点
@@ -356,6 +404,10 @@ proxy-groups:
     proxies:
       - DIRECT
       - 节点选择
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 香港节点
       - 台湾节点
@@ -369,6 +421,10 @@ proxy-groups:
     proxies:
       - DIRECT
       - 节点选择
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 美国节点
       - 香港节点
       - 台湾节点
@@ -411,6 +467,10 @@ proxy-groups:
       - 节点选择
       - 自动选择
       - DIRECT
+      - 纯日韩台自动
+      - 纯净节点-USA
+      - SPEC节点
+      - SPEC-ORACLE
       - 香港节点
       - 台湾节点
       - 狮城节点
@@ -580,6 +640,7 @@ proxy-groups:
       - 香港节点
       - 日本节点
       - 美国节点
+      - 纯日韩台自动
       - 纯净节点
       - 纯净节点-USA
       - SPEC节点
