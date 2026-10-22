@@ -102,6 +102,8 @@
         "SPEC节点",
         "SPEC-ORACLE",
         "SPEC-ORACLE手选",
+        "SPEC-ORACLE美国",
+        "SPEC-ORACLE日韩",
         "日本节点",
         "美国节点",
         "韩国节点",
@@ -792,6 +794,44 @@
           "action": "include",
           "keywords": [
             "(?i:(-spec-.*(oracle|甲骨文)|(oracle|甲骨文).*-spec-))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "SPEC-ORACLE美国",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:((美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])(?:US|USA|United States)(?![A-Za-z])).*(-spec-.*(oracle|甲骨文)|(oracle|甲骨文).*-spec-)|(-spec-.*(oracle|甲骨文)|(oracle|甲骨文).*-spec-).*(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])(?:US|USA|United States)(?![A-Za-z]))|-spec-.*(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])(?:US|USA|United States)(?![A-Za-z])).*(oracle|甲骨文)|(oracle|甲骨文).*(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])(?:US|USA|United States)(?![A-Za-z])).*-spec-))"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "SPEC-ORACLE日韩",
+      "outbounds": [
+        "{all}",
+        "REJECT"
+      ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
+      "filter": [
+        {
+          "action": "include",
+          "keywords": [
+            "(?i:((日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?![A-Za-z])|首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?![A-Za-z])).*(-spec-.*(oracle|甲骨文)|(oracle|甲骨文).*-spec-)|(-spec-.*(oracle|甲骨文)|(oracle|甲骨文).*-spec-).*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?![A-Za-z])|首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?![A-Za-z]))|-spec-.*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?![A-Za-z])|首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?![A-Za-z])).*(oracle|甲骨文)|(oracle|甲骨文).*(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|🇯🇵|(?<![A-Za-z])(?:JP|Japan)(?![A-Za-z])|首尔|韩|韓|🇰🇷|(?<![A-Za-z])(?:KR|KOR|Korea)(?![A-Za-z])).*-spec-))"
           ]
         }
       ]
