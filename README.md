@@ -100,7 +100,7 @@
 
 [quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 
-独立完整配置，节点和订阅在 QX 客户端添加。**待真机验证；合并前不要导入**（末尾 geoip 资源的 main raw URL 此时为 404）。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
+独立完整配置，节点和订阅在 QX 客户端添加。**本次策略引用修复待真机验证；合并前不要导入**。`日韩台自动` 保持自动测速，使用日本、台湾、韩国节点正则的逻辑或，不再引用其它策略。它测的是三地区中的节点，而非三个区域组当前选中的出口；主 YAML 未改。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
 
 ### Stash（iOS/macOS）
 
