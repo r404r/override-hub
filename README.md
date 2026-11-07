@@ -107,7 +107,7 @@
 
 [quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 
-独立完整配置，节点和订阅在 QX 客户端添加。**本轮 AI 自动测速候选尚无导入结果，导入和分流待真机验证；本轮合并后再更新导入**。主线的策略引用修复已合并；`日韩台自动` 保持自动节点测速，使用日本、台湾、韩国节点正则的逻辑或，测三地区中的节点，而非三个区域组当前选中的出口。本轮 `AI固定出口` 也保持自动节点测速，只用原美区 pure 节点正则，不再引用 `纯净节点-USA` 策略。历史成功与失败回报相互矛盾，均不作为已验证结果。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
+独立完整配置，节点和订阅在 QX 客户端添加。**本轮 AI 自动测速候选尚无导入结果，导入和分流待真机验证；本轮合入 main 后，raw URL 将提供此自动测速候选，下载后须核对文件哈希**。主线的策略引用修复已合并；`日韩台自动` 保持自动节点测速，使用日本、台湾、韩国节点正则的逻辑或，测三地区中的节点，而非三个区域组当前选中的出口。本轮 `AI固定出口` 也保持自动节点测速，只用原美区 pure 节点正则，不再引用 `纯净节点-USA` 策略。历史成功与失败回报相互矛盾，均不作为已验证结果。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
 
 ### Stash（iOS/macOS）
 
