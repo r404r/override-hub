@@ -107,7 +107,7 @@
 
 [quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 
-独立完整配置，节点和订阅在 QX 客户端添加。**待真机验证；合并前不要导入**（末尾 geoip 资源的 main raw URL 此时为 404）。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
+独立完整配置，节点和订阅在 QX 客户端添加。**待真机验证；本轮自动测速变更合并后再更新导入**。独立目录与末尾 geoip 资源已先行合入 main，导入前仍须检查 raw URL 可访问。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
 
 ### Stash（iOS/macOS）
 
