@@ -96,6 +96,12 @@
 - **规则集可达性**：37 个远程规则集中 29 个走 `testingcf.jsdelivr.net`，**8 个走 `raw.githubusercontent.com`**。后者在部分网络下不可达，而 Shadowrocket 没有 Mihomo 那样的本地 provider 缓存；若导入后多数域名都落到兜底组，先查这一项。
 - **验证范围**：以上全部来自静态比对与格式取证 —— 规则链逐条取回核对、策略引用闭包检查、与 Mihomo 侧的域名规则逐条等价比对。**没有在 iOS 设备上导入运行过**，因此不对延迟、连通性或分流效果作任何声称。文件由脚本从主配置生成，请勿手改。
 
+### Quantumult X（iOS）
+
+[quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
+
+独立完整配置，节点和订阅在 QX 客户端添加。**待真机验证；合并前不要导入**（末尾 geoip 资源的 main raw URL 此时为 404）。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
+
 ### Stash（iOS/macOS）
 
 [stash/block-quic.stoverride](https://raw.githubusercontent.com/r404r/override-hub/main/stash/block-quic.stoverride)
