@@ -21,17 +21,18 @@
 - `geoip, cn` 已放到远程资源末尾，使用原生 QX 格式和 `force-policy=全球直连`。远程资源先后顺序的模型仍待真机确认。
 - 4 条 Telegram IP 补充仍在 `[filter_local]`，`no-resolve` 无对应字段。关优化后它们与远程域名/IP 规则的真实优先级及解析行为待真机验证；没有据此声称 IP 分流等价。
 - 37 个原远程列表保持与主配置同 URL，经 KOP-XIAO `resource-parser.js` 和 `opt-parser=true` 转换。第三方脚本会在设备端执行，跟随上游变化；其中 GitHub、Google、OpenAI 是 YAML provider，须核对转换后的规则数。新增 geoip 资源使用 `opt-parser=false`。
-- `empty-fallback: REJECT`（20 组）和 `expected-status: 204`（16 组）不能映射。**空组是否拒绝尚未验证**，不要在缺少节点时假定失败即拒绝。16 个测速组沿用 QX 候选基线的 600 秒间隔和 `alive-checking=false`（主配置为 300 秒），测速只用一个全局 URL；可能改变自动重新选点的时机。
+- `empty-fallback: REJECT`（20 组）和 `expected-status: 204`（17 组）不能映射。**空组是否拒绝尚未验证**，不要在缺少节点时假定失败即拒绝。17 个测速组沿用 QX 候选基线的 600 秒间隔和 `alive-checking=false`（主配置为 300 秒），测速只用一个全局 URL；可能改变自动重新选点的时机。
+- `AI固定出口` 已随主配置由 `static` 改为 `url-latency-benchmark`，显式候选只保留 `纯净节点-USA`，删除两个 SPEC 组，节点正则保持不变；只在美区 pure 名称范围内测速，不再保证手选出口保持不动。无匹配节点时没有 SPEC 备选；QX 的空组是否拒绝仍待真机验证。需要 SPEC 时在 OpenAI、Gemini 等业务组手动选。具体选择、嵌套 benchmark 与正则并存和旧选择迁移均待真机验证，Mihomo 的解除固定 API 不适用于 QX。
 - 快照内 26 条 `PROCESS-NAME`、9 条 `URL-REGEX`、1 条复杂 `DOMAIN-REGEX` 不在域名对照模型内；QX 无这些原生分流写法，不补偿性加宽规则。复杂 OpenAI Azure WebPubSub 正则无法照搬，相关流量可能落到微软服务。
 - **主配置没有、QX 侧单独存在**：`[dns]` 的 `no-ipv6`、`no-system`、`doh-server = https://223.5.5.5/dns-query, https://120.53.53.53/dns-query`。本轮按决定原样保留；禁 AAAA 不等于禁用全部 IPv6，也不证明没有 DNS 泄露。蜂窝和公共 Wi-Fi 解析待验证。
 - 沿用 `fallback_udp_policy=reject`、`excluded_routes`、`dns_exclusion_list` 和全局测速 URL。被排除网段绕过隧道；它们不是主配置的完整行为映射。不带 rewrite / MITM，不声称延迟、连通性或省电收益。
 
 ## 再生与回滚
 
-生成工具位于研究库 `p-research-clash` 的本轮 `2026-11-07-001` 记录中；配置头部保留源文件 SHA256。维护者在研究库运行：
+生成工具位于研究库 `p-research-clash` 的 `2026-11-07-002` 记录中（从 `2026-11-07-001` 复制，仅修正风险头部的记录数与组数口径）；独立校验器仍来自 `2026-11-07-001`。配置头部保留源文件 SHA256。维护者在研究库运行：
 
 ```sh
-python3 research/2026/2026-11-07-001-quantumultx-publish/tools/gen_quantumultx.py --config ../override-hub/yaml/ACL4SSR_Online_Full_WithIcon.yaml --out ../override-hub/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf
+python3 research/2026/2026-11-07-002-ai-auto-exit/tools/gen_quantumultx.py --config ../override-hub/yaml/ACL4SSR_Online_Full_WithIcon.yaml --out ../override-hub/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf
 python3 research/2026/2026-11-07-001-quantumultx-publish/tools/verify_quantumultx.py --offline
 ```
 
