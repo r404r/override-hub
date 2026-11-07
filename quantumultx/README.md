@@ -1,18 +1,21 @@
 # Quantumult X
 
-**空段修复已合并、真机结果待确认。** 原候选在 iPhone 导入时报「配置文件缺少模块 [rewrite_remote]」，QX 版本/build 未知。修复后的真机导入结果尚未确认。由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
+**空段修复已合并，本候选仍待真机验证。** 原候选在 iPhone 导入时报「配置文件缺少模块 [rewrite_remote]」，当时 QX 版本/build 未知。`main` 上 SHA256 为 `f4c2400bb1725e654eb1ede4f0298d135db238ab3851af25d9e98fc86809d787` 的文件已在 iOS 27.2 (24B119)、Quantumult X 1.8.1-915 导入成功。
+本候选文件 SHA256 为 `8d9bcbf315e165bf43d20ec3848396536064d8c56b485b3b99c8eb66202f1481`，与上述文件字节不同，尚无导入结果，分流仍待真机验证。由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
 
 - [配置 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 - [CN GeoIP 规则 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/geoip-cn.list)
 
 ## 导入
 
-1. **等本轮自动测速变更合并到 main 后再更新导入**。空段兼容修复与 geoip 资源已先行合入 main，但修复后的真机导入仍待验证；下载前确认两个 raw URL 均可访问。本轮合并前配置链接仍提供旧的手选行为。
+1. **等本轮自动测速变更合并到 main 后再更新导入**。空段兼容修复与 geoip 资源已先行合入 `main`；其中 SHA256 `f4c2400b…d787` 的文件已在 Quantumult X 1.8.1-915 导入成功。
+   本候选文件 SHA256 为 `8d9bcbf3…1481`，尚无导入结果，分流仍待真机验证；下载前确认两个 raw URL 均可访问。本轮合并前配置链接仍提供旧的手选行为。
 2. 在 QX 备份当前配置和策略选择，通过「下载配置」导入配置 raw URL，或复制配置内容。它是一份完整配置；先保留自己的节点资料。
 3. 在 QX 客户端添加自己的节点或订阅。文件中的 `[server_local]` / `[server_remote]` 均为空，不含节点、订阅 URL 或凭证。
 4. **在 App 中关闭「分流匹配优化」**。官方 sample.conf 没有记录可在配置文件里表达这个开关的键，不能只靠导入自动关闭；不同版本菜单位置以 App 为准。
 5. 更新远程资源，确认原有 37 个列表和最后的 `GeoIP-CN` 共 38 个都加载成功。后者必须只有 `geoip, cn, 全球直连` 一行，保持最后一个，不要移回本地。
-6. 记录 QX 版本/build、iOS 版本与导入结果；期望不再报缺段，若出现其他错误，回传错误原文。核对每组节点数量、当前选择与默认路径；检查活动记录中广告、AI、国内站点、Telegram 的策略。此修复尚未完成 iPhone 导入、正则、空组、DNS、UDP 和内存验证；空段是否触发证书提示或后台行为也需观察。
+6. 记录 QX 版本/build、iOS 版本与导入结果；期望不再报缺段，若出现其他错误，回传错误原文。核对每组节点数量、当前选择与默认路径；检查活动记录中广告、AI、国内站点、Telegram 的策略。`main` 上 SHA256 `f4c2400b…d787` 的文件已在 Quantumult X 1.8.1-915 导入成功。
+   本候选文件 SHA256 为 `8d9bcbf3…1481`，尚无导入结果，分流仍待真机验证；正则、空组、DNS、UDP、内存，以及空段是否触发证书提示或后台行为均需分别观察。
 
 ## 与主配置的差距
 
@@ -39,4 +42,4 @@ python3 research/2026/2026-11-07-001-quantumultx-publish/tools/verify_quantumult
 
 生成器同时重出配置与 `geoip-cn.list`，不要手改产物。校验器默认用已留存的同一历史快照；结果不代表上游列表或设备端解析器当前输出。
 
-空段兼容修复已先行合并，本轮自动测速变更保留五个空段。真机发现问题时先切回备份配置，再由维护者按本轮记录对两库成对 `git revert`；不要只改 geoip 地址或规则顺序。回滚本次修复会恢复已知缺段、导入失败的原候选，不能当作可用配置；若后续调整已合并，应先逆序回滚后续相关改动。
+空段兼容修复已先行合并，本轮自动测速变更保留五个空段。真机发现问题时先切回备份配置，再由维护者按本轮记录对两库成对 `git revert`；只 revert 本轮合并提交，会回到仍含五个空段的版本（配置基线 `999a6ee243e15dace0fd234e439abc7f2aeb511b`，QX 文件 SHA256 `f4c2400b…d787`）。不要连带 revert 更早的空段兼容修复，否则会回到缺段、导入失败的文件；不要只改 geoip 地址或规则顺序。若后续调整已合并，应先逆序回滚后续相关改动。

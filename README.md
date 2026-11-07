@@ -49,9 +49,9 @@
   | `纯净节点-USA` | 22 个：上面 21 个再加 `AI固定出口` |
   | `SPEC节点`、`SPEC-ORACLE` | 各 21 个：与 `纯日韩台自动` 上面列出的名单相同，不再包含 `AI固定出口` |
 
-  **`AI固定出口` 现在自动测速**：组名保留，但已由 `select` 改为 `url-test`，300 秒间隔、50 毫秒容差，与 `纯净节点-USA` 使用相同的测速 URL 和 204 状态检查。显式候选只保留 `纯净节点-USA`，删除 `SPEC节点`、`SPEC-ORACLE`，并保留原来的 pure+美国节点正则；因此只在与 `纯净节点-USA` 相同的美区 pure 名称匹配范围内自动选择，不再保证手选后出口保持不动。名字不能证明真实地区或公网 IP，实际出口待真机验证。Mihomo 主配置在没有匹配的美区 pure 节点时按 `empty-fallback: REJECT` 拒绝连接，**不再有 SPEC 备选**；需要 SPEC 出口时，在 OpenAI、Gemini 等业务组手动选 `SPEC节点` 或 `SPEC-ORACLE`。五个 AI 业务组的首项仍为 AI固定出口。派生物同样改为各自的自动测速类型，测速参数保留各端既有映射；Shadowrocket/QX 的空组行为仍待真机验证。
+  **`AI固定出口` 现在自动测速**：组名保留，但已由 `select` 改为 `url-test`，300 秒间隔、50 毫秒容差，与 `纯净节点-USA` 使用相同的测速 URL 和 204 状态检查。显式候选只保留 `纯净节点-USA`，删除 `SPEC节点`、`SPEC-ORACLE`，并保留原来的 pure+美国节点正则；因此只在与 `纯净节点-USA` 相同的美区 pure 名称匹配范围内自动选择，不再保证手选后出口保持不动。名字不能证明真实地区或公网 IP，实际出口待真机验证。Mihomo v1.19.31 在没有匹配的美区 pure 节点时，经内层 `纯净节点-USA` 的 `empty-fallback: REJECT` 拒绝连接；外层 `AI固定出口` 仍有该显式成员，不会触发自身的 `empty-fallback`，**不再有 SPEC 备选**；需要 SPEC 出口时，在 OpenAI、Gemini 等业务组手动选 `SPEC节点` 或 `SPEC-ORACLE`。五个 AI 业务组的首项仍为 AI固定出口。派生物同样改为各自的自动测速类型，测速参数保留各端既有映射；Shadowrocket/QX 的空组行为仍待真机验证。
 
-  **Mihomo v1.19.31 的旧选择迁移**：启用 `profile.store-selected` 时，会按组名恢复缓存到 url-test，存活的已选成员会优先于延迟选择。**重新点一次成员会再次固定**，不能用它恢复自动。请在支持的面板使用「解除固定 / 恢复自动」；若面板无此操作，可向自己的外部控制器发送 `DELETE /proxies/AI%E5%9B%BA%E5%AE%9A%E5%87%BA%E5%8F%A3`（按本机设置提供地址与认证），再用同路径 `GET` 确认 `type` 为 `URLTest`、`fixed` 为 `""`，重载后复查。该 DELETE 会清空运行中的固定选择，并在启用选择持久化时把该组缓存写为空；不要把 PUT 选节点当作解除固定。依据：[缓存恢复](https://github.com/MetaCubeX/mihomo/blob/v1.19.31/hub/executor/executor.go#L414-L440)、[优先使用固定成员](https://github.com/MetaCubeX/mihomo/blob/v1.19.31/adapter/outboundgroup/urltest.go#L96-L133)、[解除固定路由](https://github.com/MetaCubeX/mihomo/blob/v1.19.31/hub/route/proxies.go#L139-L149)。这些是源码核对，未替用户清过缓存或操作设备；Stash、Shadowrocket、QX、塔台的选择保存与恢复必须分别验证，不能套用此 API。
+  **Mihomo v1.19.31 的旧选择迁移**：启用 `profile.store-selected` 时，会按组名恢复缓存到 url-test，存活的已选成员会优先于延迟选择。**重新点一次成员会再次固定**，不能用它恢复自动。请在支持的面板使用「解除固定 / 恢复自动」；若面板无此操作，可向自己的外部控制器发送 `DELETE /proxies/AI%E5%9B%BA%E5%AE%9A%E5%87%BA%E5%8F%A3`（按本机设置提供地址与认证），再用同路径 `GET` 确认 `type` 为 `URLTest`、`fixed` 为 `""`，重载后复查。该 DELETE 会清空运行中的固定选择，并在启用选择持久化时把该组缓存写为空；不要把 PUT 选节点当作解除固定。依据：[缓存恢复](https://github.com/MetaCubeX/mihomo/blob/v1.19.31/hub/executor/executor.go#L439-L467)、[优先使用固定成员](https://github.com/MetaCubeX/mihomo/blob/v1.19.31/adapter/outboundgroup/urltest.go#L96-L133)、[解除固定路由](https://github.com/MetaCubeX/mihomo/blob/v1.19.31/hub/route/proxies.go#L150-L160)。这些是源码核对，未替用户清过缓存或操作设备；Stash、Shadowrocket、QX、塔台的选择保存与恢复必须分别验证，不能套用此 API。
 
   旧缓存若保存的是已移除的 `SPEC节点` / `SPEC-ORACLE` 组，或不再匹配当前正则的 SPEC 单节点，Mihomo 的 `ForceSet` 仍会载入这个名字，但 `fast()` 找不到该成员就走自动计算，不会把被移除的节点重新加入；此时 `fixed` 可能仍显示旧名字，所以仍应解除固定并重载复查。若某 SPEC 单节点的名字同时满足原 pure+美国正则，它仍在合法候选内，缓存会继续优先使用它；它被保留是因为通过名称筛选，和移除两个 SPEC 组不矛盾。这些同样是源码结论，设备结果待验证。
 
@@ -107,7 +107,8 @@
 
 [quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 
-独立完整配置，节点和订阅在 QX 客户端添加。**待真机验证；本轮自动测速变更合并后再更新导入**。独立目录与末尾 geoip 资源已先行合入 main，导入前仍须检查 raw URL 可访问。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
+独立完整配置，节点和订阅在 QX 客户端添加。`main` 上 SHA256 为 `f4c2400bb1725e654eb1ede4f0298d135db238ab3851af25d9e98fc86809d787` 的文件已在 iOS 27.2 (24B119)、Quantumult X 1.8.1-915 导入成功。
+本候选文件 SHA256 为 `8d9bcbf315e165bf43d20ec3848396536064d8c56b485b3b99c8eb66202f1481`，与上述文件字节不同，尚无导入结果，分流仍待真机验证。**本轮自动测速变更合并后再更新导入**。独立目录与末尾 geoip 资源已先行合入 main，导入前仍须检查 raw URL 可访问。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
 
 ### Stash（iOS/macOS）
 
