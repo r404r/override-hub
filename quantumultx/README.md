@@ -1,18 +1,18 @@
 # Quantumult X
 
-**待真机验证。** 由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
+**空段修复已合并、待真机重试。** 原候选在 iPhone 导入时报「配置文件缺少模块 [rewrite_remote]」，QX 版本/build 未知。本次补空段的修复尚未在真机导入。由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
 
 - [配置 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 - [CN GeoIP 规则 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/geoip-cn.list)
 
 ## 导入
 
-1. **等本轮自动测速变更合并到 main 后再更新导入**。独立目录与 geoip 资源已先行合入 main；下载前确认两个 raw URL 均可访问，本轮合并前主配置链接仍提供旧的手选行为。
+1. **等本轮自动测速变更合并到 main 后再更新导入**。空段兼容修复与 geoip 资源已先行合入 main，但修复后的真机导入仍待验证；下载前确认两个 raw URL 均可访问。本轮合并前配置链接仍提供旧的手选行为。
 2. 在 QX 备份当前配置和策略选择，通过「下载配置」导入配置 raw URL，或复制配置内容。它是一份完整配置；先保留自己的节点资料。
 3. 在 QX 客户端添加自己的节点或订阅。文件中的 `[server_local]` / `[server_remote]` 均为空，不含节点、订阅 URL 或凭证。
 4. **在 App 中关闭「分流匹配优化」**。官方 sample.conf 没有记录可在配置文件里表达这个开关的键，不能只靠导入自动关闭；不同版本菜单位置以 App 为准。
 5. 更新远程资源，确认原有 37 个列表和最后的 `GeoIP-CN` 共 38 个都加载成功。后者必须只有 `geoip, cn, 全球直连` 一行，保持最后一个，不要移回本地。
-6. 核对每组节点数量、当前选择与默认路径；检查活动记录中广告、AI、国内站点、Telegram 的策略。此配置尚未完成 iPhone 导入、正则、空组、DNS、UDP 和内存验证。
+6. 记录 QX 版本/build、iOS 版本与导入结果；期望不再报缺段，若出现其他错误，回传错误原文。核对每组节点数量、当前选择与默认路径；检查活动记录中广告、AI、国内站点、Telegram 的策略。此修复尚未完成 iPhone 导入、正则、空组、DNS、UDP 和内存验证；空段是否触发证书提示或后台行为也需观察。
 
 ## 与主配置的差距
 
@@ -25,7 +25,8 @@
 - `AI固定出口` 已随主配置由 `static` 改为 `url-latency-benchmark`，显式候选只保留 `纯净节点-USA`，删除两个 SPEC 组，节点正则保持不变；只在美区 pure 名称范围内测速，不再保证手选出口保持不动。无匹配节点时没有 SPEC 备选；QX 的空组是否拒绝仍待真机验证。需要 SPEC 时在 OpenAI、Gemini 等业务组手动选。具体选择、嵌套 benchmark 与正则并存和旧选择迁移均待真机验证，Mihomo 的解除固定 API 不适用于 QX。
 - 快照内 26 条 `PROCESS-NAME`、9 条 `URL-REGEX`、1 条复杂 `DOMAIN-REGEX` 不在域名对照模型内；QX 无这些原生分流写法，不补偿性加宽规则。复杂 OpenAI Azure WebPubSub 正则无法照搬，相关流量可能落到微软服务。
 - **主配置没有、QX 侧单独存在**：`[dns]` 的 `no-ipv6`、`no-system`、`doh-server = https://223.5.5.5/dns-query, https://120.53.53.53/dns-query`。本轮按决定原样保留；禁 AAAA 不等于禁用全部 IPv6，也不证明没有 DNS 泄露。蜂窝和公共 Wi-Fi 解析待验证。
-- 沿用 `fallback_udp_policy=reject`、`excluded_routes`、`dns_exclusion_list` 和全局测速 URL。被排除网段绕过隧道；它们不是主配置的完整行为映射。不带 rewrite / MITM，不声称延迟、连通性或省电收益。
+- 含 `[rewrite_remote]`、`[rewrite_local]`、`[task_local]`、`[http_backend]`、`[mitm]` 5 个空段头，因为 App 导入时要求段存在（已观察到缺 `[rewrite_remote]` 的报错）；其余四段按官方 sample 一并补齐，不代表已经验证所有版本都要求它们。五段内只有注释，没有任何 rewrite、任务/后端脚本、主机名或 CA 设置，也没有 MITM 规则。既有远程资源解析器仍按上条说明使用。
+- 沿用 `fallback_udp_policy=reject`、`excluded_routes`、`dns_exclusion_list` 和全局测速 URL。被排除网段绕过隧道；它们不是主配置的完整行为映射。不声称延迟、连通性或省电收益。
 
 ## 再生与回滚
 
@@ -38,4 +39,4 @@ python3 research/2026/2026-11-07-001-quantumultx-publish/tools/verify_quantumult
 
 生成器同时重出配置与 `geoip-cn.list`，不要手改产物。校验器默认用已留存的同一历史快照；结果不代表上游列表或设备端解析器当前输出。
 
-真机发现问题时先切回备份配置，再由维护者按本轮记录对两库成对 `git revert`；不要只改 geoip 地址或规则顺序。
+空段兼容修复已先行合并，本轮自动测速变更保留五个空段。真机发现问题时先切回备份配置，再由维护者按本轮记录对两库成对 `git revert`；不要只改 geoip 地址或规则顺序。回滚本次修复会恢复已知缺段、导入失败的原候选，不能当作可用配置；若后续调整已合并，应先逆序回滚后续相关改动。
