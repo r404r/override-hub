@@ -1,6 +1,6 @@
 # Quantumult X
 
-**空段修复已合并、待真机重试。** 原候选在 iPhone 导入时报「配置文件缺少模块 [rewrite_remote]」，QX 版本/build 未知。本次补空段的修复尚未在真机导入。由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
+**空段修复已合并、真机结果待确认。** 原候选在 iPhone 导入时报「配置文件缺少模块 [rewrite_remote]」，QX 版本/build 未知。修复后的真机导入结果尚未确认。由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
 
 - [配置 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 - [CN GeoIP 规则 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/geoip-cn.list)
