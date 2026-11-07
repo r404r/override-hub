@@ -107,8 +107,7 @@
 
 [quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 
-独立完整配置，节点和订阅在 QX 客户端添加。`main` 上 SHA256 为 `f4c2400bb1725e654eb1ede4f0298d135db238ab3851af25d9e98fc86809d787` 的文件已在 iOS 27.2 (24B119)、Quantumult X 1.8.1-915 导入成功。
-本候选文件 SHA256 为 `8d9bcbf315e165bf43d20ec3848396536064d8c56b485b3b99c8eb66202f1481`，与上述文件字节不同，尚无导入结果，分流仍待真机验证。**本轮自动测速变更合并后再更新导入**。独立目录与末尾 geoip 资源已先行合入 main，导入前仍须检查 raw URL 可访问。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
+独立完整配置，节点和订阅在 QX 客户端添加。**本轮 AI 自动测速候选尚无导入结果，导入和分流待真机验证；本轮合并后再更新导入**。主线的策略引用修复已合并；`日韩台自动` 保持自动节点测速，使用日本、台湾、韩国节点正则的逻辑或，测三地区中的节点，而非三个区域组当前选中的出口。本轮 `AI固定出口` 也保持自动节点测速，只用原美区 pure 节点正则，不再引用 `纯净节点-USA` 策略。历史成功与失败回报相互矛盾，均不作为已验证结果。导入后必须在 App 中关闭「分流匹配优化」，并确认全部 38 个远程资源加载成功。导入步骤、与主配置的差距和再生方法见 [quantumultx/README.md](quantumultx/README.md)。
 
 ### Stash（iOS/macOS）
 
