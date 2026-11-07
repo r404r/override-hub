@@ -1,15 +1,15 @@
 # Quantumult X
 
-**策略引用修复已合并，待真机验证。** 修复前补齐空段的配置在 iPhone 导入时报「该类型策略不可引用其它策略」，指向「日本节点」←「日韩台自动」；该次 QX 版本/build 未知。当前 main 保持自动测速，改用节点正则，可以导入复测，尚未真机验证。由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
+**主线策略引用修复已合并，本轮 AI 自动测速候选尚无导入结果、待真机验证。** 修复前补齐空段的配置在 iPhone 导入时报「该类型策略不可引用其它策略」，指向「日本节点」←「日韩台自动」；QX 版本/build 未知。本轮合入 main 后，配置 raw URL 将提供 AI固定出口 自动测速、仅靠节点正则取成员的新文件，尚无真机导入结果。由主配置 `yaml/ACL4SSR_Online_Full_WithIcon.yaml` 机械派生，适用于 Quantumult X；不是 Mihomo 覆写。
 
-历史回报需核对：13:45 JST 曾回报成功（iOS 27.2 (24B119)，QX 1.8.1-915）；15:06 JST 又回报上述策略引用错误。两次回报相互矛盾，原因未知，不能把任一次当作已验证结果；修复后的配置尚未真机验证，也不能据前一次回报认定段结构、语法或 `[dns]` 无 `server=` 已被接受。
+历史回报需核对：13:45 JST 曾回报成功（iOS 27.2 (24B119)，QX 1.8.1-915）；15:06 JST 又回报上述策略引用错误。两次回报相互矛盾，原因未知，不能把任一次当作已验证结果；本候选尚未真机验证，也不能据前一次回报认定段结构、语法或 `[dns]` 无 `server=` 已被接受。
 
 - [配置 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf)
 - [CN GeoIP 规则 raw URL](https://raw.githubusercontent.com/r404r/override-hub/main/quantumultx/geoip-cn.list)
 
 ## 导入
 
-1. **策略引用修复已合并到 main，可以导入复测**。空段修复与 geoip 资源已发布；当前 main 的日韩台自动已改用节点正则，不再引用地区策略名，导入及运行效果待真机验证。
+1. **本轮合入 main 后，配置 raw URL 将提供 AI固定出口 自动测速的新文件**。空段修复、geoip 资源和策略引用修复已在主线保留；下载后核对配置 SHA256 为 `3dcbd82f7e2b0c4a3b804eb88b3b505ae9b805aa7b07e6f2e5eb470bdbd3edd9`。本候选尚无导入结果，不能用历史回报认定可导入；下载前确认两个 raw URL 可访问。
 2. 在 QX 备份当前配置和策略选择，通过「下载配置」导入配置 raw URL，或复制配置内容。它是一份完整配置；先保留自己的节点资料。
 3. 在 QX 客户端添加自己的节点或订阅。文件中的 `[server_local]` / `[server_remote]` 均为空，不含节点、订阅 URL 或凭证。
 4. **在 App 中关闭「分流匹配优化」**。官方 sample.conf 没有记录可在配置文件里表达这个开关的键，不能只靠导入自动关闭；不同版本菜单位置以 App 为准。
@@ -18,13 +18,15 @@
 
 ## 与主配置的差距
 
-- 主配置 49 组生成 48 策略（32 个 `static`、16 个 `url-latency-benchmark`，由生成器统计）；除下述非 static 策略引用转换外，其它成员顺序和节点正则原样映射。`GLOBAL` 是 Mihomo 专有且无规则引用，不生成。15:06 JST 确实出现过「该类型策略不可引用其它策略」的错误文案，指向 `url-latency-benchmark` 的日韩台自动引用日本节点；成因和修复效果待真机复测。`static` 引用其它策略仍是「官方 sample 有示例，这次导入没有报这条」，不能写成已验证或已否证。后顾环视、测速组正则、static 候选与正则并存仍需设备核对。
+- 主配置 49 组生成 48 策略（31 个 `static`、17 个 `url-latency-benchmark`，由生成器统计）；除下述非 static 策略引用转换外，其它成员顺序和节点正则原样映射。`GLOBAL` 是 Mihomo 专有且无规则引用，不生成。15:06 JST 确实出现过「该类型策略不可引用其它策略」的错误文案，指向 `url-latency-benchmark` 的日韩台自动引用日本节点；成因和修复效果待真机复测。`static` 引用其它策略仍是「官方 sample 有示例，这次导入没有报这条」，不能写成已验证或已否证。后顾环视、测速组正则、static 候选与正则并存仍需设备核对。
 - **按指定行为保持自动测速**：`日韩台自动` 仍为 `url-latency-benchmark`，保留图标和测速参数，候选中删除三个地区策略名，`server-tag-regex` 改成日本节点、台湾节点、韩国节点三条筛选正则的逻辑或。测的是三个地区中全部匹配的节点，**不是三个区域组当前选中的那一个节点**。主 YAML 没有改，仍比较子组当前出口；这是已合并修复明确采用的行为差异。其它非 static 策略也按同样方式递归展开策略候选到节点正则；已有自身筛选也纳入并集。所有 static 策略及 `纯日韩台自动` 的筛选范围保持原样，不打平 static 组。
+- `AI固定出口` 随主配置由 `static` 改为 `url-latency-benchmark`；用 003 轮生成器将原显式 `纯净节点-USA` 与自身节点筛选展开、去重为同一条美区 pure 节点正则，行内不再有任何策略名。节点范围与原 filter 匹配集合相同，不再保证手选出口保持不动；名字不证明实际出口地区。无匹配节点时没有 SPEC 备选，QX 空组行为仍待真机验证。需要 SPEC 时到 OpenAI、Gemini 等业务组手动选择；Mihomo 的解除固定 API 不适用于 QX。
+- **测速组依赖正则的风险，待真机验证**：官方 [sample.conf 固定版本](https://github.com/crossutility/Quantumult-X/blob/af6fb594233ec4a3ec6d4ccb3601e9c36b75ea2d/sample.conf#L102-L113) 第 102 行将 `server-tag-regex` 的适用类型限于 `static`、`available`、`round-robin`，第 113 行却给出含该参数的 `url-latency-benchmark` 示例，两处说法矛盾。QX 的 `AI固定出口` 现在只靠这条正则取成员；若设备忽略它，即使订阅里存在美区 pure 节点，该组也可能为空。若正则生效但没有匹配节点，也会失去候选；这两种情形及空组后的拒绝、直连或其它出口行为均待真机验证，不能从 Mihomo 外推。优先用 `pure-美国-01` 与应排除的 `impure-美国-01`、`SuperPure-US` 核对成员列表。
 - 必须关优化：同一历史域名快照的静态模型测得，开优化 113 / 10392 个落点不同，关优化 0 / 10392。**这只覆盖支持的域名规则，不代表所有请求等价**，也不是网络或客户端实测。
 - `geoip, cn` 已放到远程资源末尾，使用原生 QX 格式和 `force-policy=全球直连`。远程资源先后顺序的模型仍待真机确认。
 - 4 条 Telegram IP 补充仍在 `[filter_local]`，`no-resolve` 无对应字段。关优化后它们与远程域名/IP 规则的真实优先级及解析行为待真机验证；没有据此声称 IP 分流等价。
 - 37 个原远程列表保持与主配置同 URL，经 KOP-XIAO `resource-parser.js` 和 `opt-parser=true` 转换。第三方脚本会在设备端执行，跟随上游变化；其中 GitHub、Google、OpenAI 是 YAML provider，须核对转换后的规则数。新增 geoip 资源使用 `opt-parser=false`。
-- `empty-fallback: REJECT`（20 组）和 `expected-status: 204`（16 组）不能映射。**空组是否拒绝尚未验证**，不要在缺少节点时假定失败即拒绝。16 个测速组沿用 QX 候选基线的 600 秒间隔和 `alive-checking=false`（主配置为 300 秒），测速只用一个全局 URL；可能改变自动重新选点的时机。
+- `empty-fallback: REJECT`（20 组）和 `expected-status: 204`（17 组）不能映射。**空组是否拒绝尚未验证**，不要在缺少节点时假定失败即拒绝。17 个测速组沿用 QX 候选基线的 600 秒间隔和 `alive-checking=false`（主配置为 300 秒），测速只用一个全局 URL；可能改变自动重新选点的时机。
 - 快照内 26 条 `PROCESS-NAME`、9 条 `URL-REGEX`、1 条复杂 `DOMAIN-REGEX` 不在域名对照模型内；QX 无这些原生分流写法，不补偿性加宽规则。复杂 OpenAI Azure WebPubSub 正则无法照搬，相关流量可能落到微软服务。
 - **主配置没有、QX 侧单独存在**：`[dns]` 的 `no-ipv6`、`no-system`、`doh-server = https://223.5.5.5/dns-query, https://120.53.53.53/dns-query`。本轮按决定原样保留；禁 AAAA 不等于禁用全部 IPv6，也不证明没有 DNS 泄露。蜂窝和公共 Wi-Fi 解析待验证。
 - 含 `[rewrite_remote]`、`[rewrite_local]`、`[task_local]`、`[http_backend]`、`[mitm]` 5 个空段头，因为 App 导入时要求段存在（已观察到缺 `[rewrite_remote]` 的报错）；其余四段按官方 sample 一并补齐，不代表已经验证所有版本都要求它们。五段内只有注释，没有任何 rewrite、任务/后端脚本、主机名或 CA 设置，也没有 MITM 规则。既有远程资源解析器仍按上条说明使用。
@@ -32,7 +34,7 @@
 
 ## 再生与回滚
 
-生成工具位于研究库 `p-research-clash` 的本轮 `2026-11-07-003` 记录中；配置头部保留源文件 SHA256。维护者在研究库运行：
+当前生成器与校验器来自研究库 `p-research-clash` 已合入主线的 `2026-11-07-003` 记录；`2026-11-07-002` 的旧生成器副本不再用于当前产物；配置头部保留源文件 SHA256。维护者在研究库运行：
 
 ```sh
 python3 research/2026/2026-11-07-003-qx-policy-reference/tools/gen_quantumultx.py --config ../override-hub/yaml/ACL4SSR_Online_Full_WithIcon.yaml --out ../override-hub/quantumultx/ACL4SSR_Online_Full_WithIcon.quantumultx.conf
@@ -41,4 +43,6 @@ python3 research/2026/2026-11-07-003-qx-policy-reference/tools/verify_quantumult
 
 生成器同时重出配置与 `geoip-cn.list`，不要手改产物。上述校验只检查结构，不运行历史域名落点模型；规则快照仍为研究库已留存的历史语料，结果不代表上游列表或设备端解析器当前输出。
 
-本次策略引用修复优先于后续 `2026-11-07-002` 的分组调整；后者须用本轮生成器重出 QX，确保 AI固定出口 等非 static 策略不再引用其它策略名，仍保留自动测速。真机发现问题时先切回备份配置，再由维护者按本轮记录对两库成对 `git revert`；不要只改 geoip 地址或规则顺序。回滚本次修复会恢复已知策略引用错误、导入失败的候选，不能当作可用配置；若后续调整已合并，应先逆序回滚后续相关改动。
+主线策略引用修复与五个空段均已合并，本轮在此基础上生成 AI固定出口 的自动测速配置。真机发现问题时先切回备份，再由维护者对两库成对 `git revert` 本轮实际合并提交；只回滚本轮会回到包含策略引用修复和五个空段的主线版本。不要连带 revert 更早的策略引用修复或空段修复，否则会恢复已知导入错误；不要只改 geoip 地址或规则顺序。后续依赖若已合并，应先逆序回滚。
+
+回滚目标必须是**本轮 PR 合入 main 后产生、以合入前 main 为第一父的那枚合并提交**，由维护者核对父提交后使用 `git revert -m 1 <该合并提交>`。不要对同步主线的提交 `b7b2cf2` 或本次分支同步提交使用 `git revert -m 1`；撤销 `b7b2cf2` 会回到旧功能分支树，连带撤掉策略引用修复，恢复 benchmark 引用其它策略名的内容。最终合入 main 的提交尚未产生，不能用同步提交代替。

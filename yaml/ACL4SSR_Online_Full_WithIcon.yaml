@@ -81,14 +81,16 @@ proxy-groups:
       - 香港节点
       - 手动切换
       - DIRECT
-  # Select a single node for a stable choice, or the US group for automatic selection.
+  # Automatically test pure US choices; keep the existing node-name filter.
   - name: AI固定出口
     icon: https://testingcf.jsdelivr.net/gh/Koolson/Qure@master/IconSet/Color/AI.png
-    type: select
+    type: url-test
+    url: https://www.gstatic.com/generate_204?override-hub=204
+    expected-status: 204
+    interval: 300
+    tolerance: 50
     proxies:
       - 纯净节点-USA
-      - SPEC节点
-      - SPEC-ORACLE
     include-all: true
     empty-fallback: REJECT
     filter: (?i)^(?=.*(?<![A-Za-z])pure)(?=.*(美国|美区|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|🇺🇸|(?<![A-Za-z])US(?:[^A-Za-z]|$)|United States)).*

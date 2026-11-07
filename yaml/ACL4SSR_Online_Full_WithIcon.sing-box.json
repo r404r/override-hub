@@ -184,14 +184,15 @@
       ]
     },
     {
-      "type": "selector",
+      "type": "urltest",
       "tag": "AI固定出口",
       "outbounds": [
         "纯净节点-USA",
-        "SPEC节点",
-        "SPEC-ORACLE",
         "{all}"
       ],
+      "url": "https://www.gstatic.com/generate_204",
+      "interval": "5m",
+      "tolerance": 50,
       "filter": [
         {
           "action": "include",
